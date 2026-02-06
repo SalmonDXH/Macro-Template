@@ -1,5 +1,5 @@
 class Logging {
-    static path := A_ScriptDir '\data\debug_' A_Year '_' A_Mon '_' A_DD '_' A_Hour '_' A_Min '.log'
+    static path := A_ScriptDir '\data\debug_' A_Year '_' A_Mon '_' A_DD '_' A_Hour '_' A_Min '_' A_Sec '.log'
     static runtime := A_TickCount
 
     static trace(context, service) {
@@ -15,15 +15,15 @@ class Logging {
     }
 
     static warning(context, service) {
-        return this._write(context, 'INFO', service)
+        return this._write(context, 'WARNING', service)
     }
 
     static error(context, service) {
-        return this._write(context, 'INFO', service)
+        return this._write(context, 'ERROR', service)
     }
 
     static critical(context, service) {
-        return this._write(context, 'INFO', service)
+        return this._write(context, 'CRITICAL', service)
     }
 
     static _write(context, level, service) {
