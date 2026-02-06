@@ -1,7 +1,15 @@
 class UI {
-    static grid_layout(parent_gui, control_list := [], margin_x := 10, margin_y := 10) {
-        if !(parent_gui is Gui) {
-            return Type(parent_gui) ' is not a Gui'
+    static get_w_h_from_gui(g) {
+        if g is Gui {
+            g.GetClientPos(, , &w, &h)
+            return { w: w, h: h }
+        } else {
+            return false
+        }
+    }
+    static grid_layout(data, control_list := [], margin_x := 10, margin_y := 10) {
+        if !(data.HasOwnProp('w') and data.HasOwnProp('h')) {
+            return 'Missing variable'
         }
 
         if !(control_list is Array) {
@@ -22,13 +30,13 @@ class UI {
 
         rows := control_list.Length
 
-        parent_gui.GetClientPos(, , &parent_width, &parent_height)
-        h := (parent_height - (margin_y * (rows + 1))) / rows
+
+        h := (data.h - (margin_y * (rows + 1))) / rows
 
         for row in control_list {
             if row is Array and row.Length {
                 collumns := row.Length
-                w := (parent_width - (margin_x * (collumns + 1))) / collumns
+                w := (data.w - (margin_x * (collumns + 1))) / collumns
                 y := (A_Index * margin_y) + h * (A_Index - 1)
 
                 for control in row {
@@ -43,7 +51,7 @@ class UI {
             }
         }
 
-        return 'Successfully change apply grid out to ' parent_gui.name
+        return 'Successfully change apply grid'
     }
 
     static gui_move(ctrl, x, y, w, h) {
