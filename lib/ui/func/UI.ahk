@@ -147,9 +147,10 @@ class UI {
     }
 
 
-    static drag(hwnd) {
+    static drag(hwnd, f?) {
         static WM_NCLBUTTONDOWN := 0xA1
         static HTCAPTION := 2
         PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, , , "ahk_id " hwnd)
+        (IsSet(f) and f is Func) ? f.Call() : false
     }
 }
