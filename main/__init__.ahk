@@ -14,19 +14,18 @@ DetectHiddenWindows(true)
 #Include ..\lib\logging\Logging.ahk
 #Include ..\lib\ui\func\UI.ahk
 #Include ..\lib\file\__init__.ahk
+#Include ..\lib\discord\WEBHOOK.ahk
 #Include ..\lib\screenshot\Screenshot.ahk
-Logging.debug('Load supported library', 'Starting Macro')
+
+
+Logging.flag := false
+
+Logging.debug('Load supported library', 'Starting')
 
 ;!#############################################
 ;! GENERAL CONFIGURATION
 ;!#############################################
 
-
-Default_Config := {
-    height: 1920,
-    width: 1080,
-    resolution: 16 / 9
-}
 
 Credit_Config := {
     owner: 'Salmon',
@@ -39,23 +38,17 @@ PC_Config := {
     height: A_ScreenHeight,
     width: A_ScreenWidth,
     resolution: A_ScreenWidth / A_ScreenHeight,
-    h_ratio: A_ScreenHeight / Default_Config.height,
-    w_ratio: A_ScreenWidth / Default_Config.width
 }
 
 Macro_Config := {
-    name: '',
-    version: '',
-    UI: {
-        height: PC_Config.height * (1 / 2.5),
-        width: PC_Config.width * (1 / 4),
-        background_color: 0x000000
-    }
+    name: 'Template',
+    version: '1.0.0',
 }
+
 
 Game_Config := {}
 
-Logging.debug('Load Config', 'Starting Macro')
+Logging.debug('Load Config', 'Starting')
 
 
 ;!#############################################
@@ -64,7 +57,7 @@ Logging.debug('Load Config', 'Starting Macro')
 
 #Include backend\__init__.ahk
 #Include frontend\__init__.ahk
-Logging.debug('Load macro library', 'Starting Macro')
+Logging.debug('Load macro library', 'Starting')
 
 ;!#############################################
 ;! CONNECTION BETWEEN OTHER AHK
@@ -75,7 +68,4 @@ Logging.debug('Load macro library', 'Starting Macro')
 ;!#############################################
 
 
-Logging.debug('Macro Launched', 'Starting Macro')
-
-
-ESC:: ExitApp()
+Logging.debug('Macro Launched', 'Starting')

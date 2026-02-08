@@ -1,4 +1,9 @@
 class UI {
+    static height := 800
+    static width := 1200
+    static background_color := '000000'
+    static text_color := 'ffffff'
+    static title_color := 'ffffff'
     static get_w_h_from_gui(g) {
         if g is Gui {
             g.GetClientPos(, , &w, &h)
@@ -7,9 +12,22 @@ class UI {
             return false
         }
     }
-    static grid_layout(data, control_list := [], margin_x := 10, margin_y := 10) {
-        if !(data.HasOwnProp('w') and data.HasOwnProp('h')) {
-            return 'Missing variable'
+
+    static add_button(ctrl, context?) {
+        return ctrl is Gui ? ctrl.AddButton('+Background' this.background_color, IsSet(context) ? context : '') : false
+    }
+
+    static add_text(ctrl, context, align := '') {
+        return ctrl is Gui ? ctrl.AddText('c' this.text_color ' ' align, context) : false
+    }
+
+    static add_edit(ctrl, context?, private := false) {
+        return ctrl is Gui ? ctrl.AddEdit('c000000 ' (private ? '+Password ' : ''), IsSet(context) ? context : '') : false
+    }
+
+    static grid_layout(parent_gui, control_list := [], margin_x := 10, margin_y := 10, padding_x := 0, padding_y := 0) {
+        if !(parent_gui is Gui) {
+            return Type(parent_gui) ' is not a Gui'
         }
 
         if !(control_list is Array) {
@@ -28,19 +46,30 @@ class UI {
             return 'Invalid margin y'
         }
 
+        if !(padding_x is Number) or (padding_x < 0) {
+            return 'Invalid padding x'
+        }
+
+        if !(padding_y is Number) or (padding_y < 0) {
+            return 'Invalid padding y'
+        }
+
         rows := control_list.Length
 
-
-        h := (data.h - (margin_y * (rows + 1))) / rows
+        parent_gui.GetClientPos(, , &parent_width, &parent_height)
+        h := (parent_height - padding_y * 2 - (margin_x * (rows - 1))) / rows
 
         for row in control_list {
             if row is Array and row.Length {
                 collumns := row.Length
-                w := (data.w - (margin_x * (collumns + 1))) / collumns
-                y := (A_Index * margin_y) + h * (A_Index - 1)
+                if !collumns {
+                    continue
+                }
+                w := (parent_width - padding_x * 2 - (margin_x * (collumns - 1))) / collumns
+                y := padding_y + ((A_Index - 1) * margin_y) + h * (A_Index - 1)
 
                 for control in row {
-                    x := (A_Index * margin_x) + w * (A_Index - 1)
+                    x := padding_x + ((A_Index - 1) * margin_x) + w * (A_Index - 1)
 
                     if control is Gui {
                         this.gui_move(control, x, y, w, h)
@@ -51,14 +80,76 @@ class UI {
             }
         }
 
-        return 'Successfully change apply grid'
+        return 'Successfully change apply grid out to ' parent_gui.Title
     }
 
     static gui_move(ctrl, x, y, w, h) {
         return ctrl is Gui ? ctrl.show('x' x ' y' y ' w' w ' h' h) : false
     }
 
+    static gui_simple(ctrl, w, h) {
+        return ctrl is Gui ? ctrl.show('w' w ' h' h) : false
+    }
+
     static control_move(ctrl, x, y, w, h) {
-        return ctrl is Gui.Control ? ctrl.move('x' x ' y' y ' w' w ' h' h) : false
+        return ctrl is Gui.Control ? ctrl.Move(x, y, w, h) : false
+    }
+
+    static add_to_parent(parent_gui) {
+        if parent_gui is Gui {
+            g := Gui('-Caption -Border +AlwaysOnTop -Resize +Parent' parent_gui.Hwnd)
+            g.BackColor := parent_gui.BackColor
+            return g
+        }
+        return false
+    }
+
+    static gui_groupbox(g, name := '', color := this.title_color) {
+        if g is Gui {
+            c := IsSet(color) ? color : 'ffffff'
+            g.GetClientPos(, , &w, &h)
+            return g.AddGroupBox('x0 y0 w' w ' h' h ' c' c, name).SetFont('bold s10')
+        }
+        return false
+    }
+
+    static get_image(bit, path) {
+
+    }
+
+    static round_gui(hwnd) {
+        ; Window MUST be visible
+        WinGetPos(, , &w, &h, "ahk_id " hwnd)
+        if (w <= 0 || h <= 0)
+            return false
+
+        ; Create ellipse region (perfect vector)
+        hRgn := DllCall(
+            "CreateEllipticRgn",
+            "int", 0,
+            "int", 0,
+            "int", w,
+            "int", h,
+            "ptr"
+        )
+
+        DllCall("SetWindowRgn", "ptr", hwnd, "ptr", hRgn, "int", true)
+
+        ; Force redraw (important for child GUIs)
+        DllCall("RedrawWindow",
+            "ptr", hwnd,
+            "ptr", 0,
+            "ptr", 0,
+            "uint", 0x85
+        )
+
+        return true
+    }
+
+
+    static drag(hwnd) {
+        static WM_NCLBUTTONDOWN := 0xA1
+        static HTCAPTION := 2
+        PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, , , "ahk_id " hwnd)
     }
 }

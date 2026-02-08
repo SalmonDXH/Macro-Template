@@ -1,4 +1,5 @@
 class Logging {
+    static flag := true
     static path := A_ScriptDir '\data\debug_' A_Year '_' A_Mon '_' A_DD '_' A_Hour '_' A_Min '_' A_Sec '.log'
     static runtime := A_TickCount
 
@@ -18,37 +19,58 @@ class Logging {
         return this._write(context, 'WARNING', service)
     }
 
-    static error(context, service) {
-        return this._write(context, 'ERROR', service)
+    static error(context, service, e?) {
+        s := context
+        if IsSet(e) and e is Error {
+            s .= '`nReason: ' e.Message
+            s .= '`nWhat: ' e.What
+            s .= '`nExtra: ' e.Extra
+            s .= '`nLocation: ' e.Stack
+        }
+        return this._write(s, 'ERROR', service)
     }
 
-    static critical(context, service) {
-        return this._write(context, 'CRITICAL', service)
+    static critical(context, service, e?) {
+        s := context
+        if IsSet(e) and e is Error {
+            s .= '`nReason: ' e.Message
+            s .= '`nWhat: ' e.What
+            s .= '`nExtra: ' e.Extra
+            s .= '`nLocation: `n' e.Stack
+        }
+        this._write(s, 'CRITICAL', service)
+        MsgBox(s)
+        return ExitApp()
     }
 
     static _write(context, level, service) {
-        try {
-            if this._ensure_dir() {
-                tc := (A_TickCount - this.runtime)
-                h := tc // (3600000)
-                m := Mod(tc // 60000, 60000)
-                s := Mod(tc // 1000, 1000)
-                time := ("["
-                    . (h > 9 ? h : "0" h) ":"
-                    . (m > 9 ? m : "0" m) ":"
-                    . (s > 9 ? s : "0" s)
-                    . "]")
-                pad := Max(0, 8 - StrLen(level))
-                l_text := "[" . level "]"
-                return FileAppend(time ' ' l_text ' [' service '] ' context '`n', this.path)
-            } else {
-                MsgBox('Error creating path:`n' this.path, 'Logs Error')
+        if this.flag {
+            try {
+                if this._ensure_dir() {
+                    tc := (A_TickCount - this.runtime)
+                    h := tc // (3600000)
+                    m := Mod(tc // 60000, 60000)
+                    s := Mod(tc // 1000, 1000)
+                    time := ("["
+                        . (h > 9 ? h : "0" h) ":"
+                        . (m > 9 ? m : "0" m) ":"
+                        . (s > 9 ? s : "0" s)
+                        . "]")
+                    pad := Max(0, 8 - StrLen(level))
+                    l_text := "[" . level "]"
+                    return FileAppend(time ' ' l_text ' [' A_ScriptName ']' ' [' service '] ' context '`n', this.path)
+                } else {
+                    MsgBox('Error creating path:`n' this.path, 'Logs Error')
+                    return false
+                }
+            } catch Error as e {
+                MsgBox(e.Message '`n' e.What '`n' e.File, 'Logs Error')
                 return false
             }
-        } catch Error as e {
-            MsgBox(e.Message '`n' e.What '`n' e.File, 'Logs Error')
-            return false
+        } else {
+            return true
         }
+
 
     }
 
