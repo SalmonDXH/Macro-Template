@@ -45,6 +45,11 @@ Macro_Config := {
     version: '1.0.0',
 }
 
+Roblox_Config := {
+    window: 'ahk_exe RobloxPlayerBeta.exe',
+    process: 'RobloxPlayerBeta.exe'
+}
+
 
 Game_Config := {}
 

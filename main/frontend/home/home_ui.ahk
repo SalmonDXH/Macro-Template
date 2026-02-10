@@ -46,15 +46,31 @@ try {
     Logging.critical('Fail to create minimize button', 'Home UI', e)
 }
 
+
 try {
     home_ui_drag_bar := UI.add_to_parent(home_ui)
     home_ui_drag_bar_text := home_ui_drag_bar.AddText('x0 y0 w800 h20 c' UI.title_color, Macro_Config.name ' v' Macro_Config.version ' by ' Credit_Config.owner)
     home_ui_drag_bar_text.SetFont('bold s10')
-    home_ui_drag_bar_text.OnEvent('Click', (*) => UI.drag(home_ui.Hwnd))
+    home_ui_drag_bar_text.OnEvent('Click', (*) => UI.drag(home_ui.Hwnd, set_size))
     UI.gui_move(home_ui_drag_bar, 30, 5, 800, 20)
     Logging.debug('Create drag bar for home ui', 'Home UI')
 } catch Error as e {
     Logging.critical('Fail to create  drag bar', 'Home UI', e)
+}
+
+set_size() {
+    if WinExist(home_ui.Hwnd) {
+        WinActivate(home_ui.Hwnd)
+        if WinExist(Roblox_Config.window) {
+            WinActivate(Roblox_Config.window)
+            WinGetPos(, , &w, &h, Roblox_Config.window)
+            if w = A_ScreenWidth and h = A_ScreenHeight {
+                SendInput('{F11}')
+            }
+            WinGetPos(&x, &y, , , roblox_holder.Hwnd)
+            WinMove(x - 8, y - 30, 800, 598, Roblox_Config.window)
+        }
+    }
 }
 
 ;?#############################################
@@ -120,10 +136,10 @@ try {
             [discord_webhook_text, discord_webhook_edit, discord_webhook_test_button],
             [discord_bot_text, discord_bot_edit, discord_bot_run_button],
         ], , , 10, 25)
-    Logging.debug('Create all element needed for discord holder', 'Discord Holder')
+    Logging.debug('Create all element needed for discord holder UI', 'Discord Holder')
 
     ;! Roblox
-    roblox_private_server_text := UI.add_text(roblox_misc_holder, 'PS url:', '+Center')
+    roblox_private_server_text := UI.add_text(roblox_misc_holder, 'PS URL:', '+Center')
     roblox_private_server_edit := UI.add_edit(roblox_misc_holder)
     roblox_private_server_test_button := UI.add_button(roblox_misc_holder, 'Test')
 
@@ -134,8 +150,33 @@ try {
         [roblox_reconnect_every_text, roblox_reconnect_every_edit],
         []
     ], , , 10, 25)
+    Logging.debug('Create all element needed for Roblox holder UI', 'Roblox Holder')
+    ;! Keybind
+    F1_keybind_button := UI.add_button(keybind_misc_holder, 'Align (F1)')
+    F2_keybind_button := UI.add_button(keybind_misc_holder, 'Start (F2)')
+    F3_keybind_button := UI.add_button(keybind_misc_holder, 'Reload (F3)')
+    F4_keybind_button := UI.add_button(keybind_misc_holder, 'Pause (F4)')
+    F5_keybind_button := UI.add_button(keybind_misc_holder, 'PS (F5)')
+    F6_keybind_button := UI.add_button(keybind_misc_holder, 'Discord Bot (F6)')
+    F7_keybind_button := UI.add_button(keybind_misc_holder, 'Custom (F7)')
 
+    UI.grid_layout(keybind_misc_holder, [
+        [F1_keybind_button, F2_keybind_button, F3_keybind_button],
+        [F4_keybind_button, F5_keybind_button, F6_keybind_button],
+        [F7_keybind_button, '', '']
+    ], , , 10, 25)
+    Logging.debug('Create all element needed for Keybind holder UI', 'Keybind Holder')
 
+    ;! Support
+    tutorial_support_button := UI.add_button(support_misc_holder, 'Tutorial')
+    youtube_support_button := UI.add_button(support_misc_holder, 'Youtube')
+    discord_support_button := UI.add_button(support_misc_holder, 'Discord')
+    website_support_button := UI.add_button(support_misc_holder, 'Our website')
+    UI.grid_layout(support_misc_holder, [
+        [tutorial_support_button, youtube_support_button],
+        [discord_support_button, website_support_button],
+    ], , , 10, 25)
+    Logging.debug('Create all element needed for Support holder UI', 'Support Holder')
 } catch Error as e {
     Logging.critical('Fail to create misc holder ui', 'Home UI', e)
 }

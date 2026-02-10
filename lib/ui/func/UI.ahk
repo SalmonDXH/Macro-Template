@@ -1,6 +1,6 @@
 class UI {
     static height := 800
-    static width := 1200
+    static width := 1260
     static background_color := '000000'
     static text_color := 'ffffff'
     static title_color := 'ffffff'
