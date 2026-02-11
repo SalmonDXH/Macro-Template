@@ -4,7 +4,12 @@ class IniFile extends FileCustom {
     read(section, key) {
         if this.check() {
             try {
-                return IniRead(this.path, section, key)
+                val := IniRead(this.path, section, key)
+                try {
+                    return Number(val)
+                } catch {
+                    return val
+                }
             } catch {
                 return false
             }

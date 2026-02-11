@@ -1,5 +1,5 @@
 class FileCustom {
-    path => String
+    path := ''
     __New(p) {
         this.path := p
     }

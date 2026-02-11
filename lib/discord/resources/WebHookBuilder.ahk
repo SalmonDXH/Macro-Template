@@ -10,11 +10,10 @@ Class WebHookBuilder {
     __New(webhookURL) {
         if !(webhookURL ~= 'i)https?:\/\/discord\.com\/api\/webhooks\/(\d{18,19})\/[\w-]{68}')
             throw Error("invalid webhook URL", , webhookURL)
-        this.webhookURL := webhookURL   
+        this.webhookURL := webhookURL
     }
     Call(method, options) {
-        defaultHeaders := {
-            %"User-Agent"%: "DiscordBot (by Ninju)"
+        defaultHeaders := { %"User-Agent"%: "DiscordBot (by Ninju)"
         }
         (whr := ComObject("WinHttp.WinHttpRequest.5.1")).Open(method, this.webhookURL, false)
         for i, j in defaultHeaders.OwnProps()
@@ -47,7 +46,7 @@ Class WebHookBuilder {
                 else form.AppendFile(j.file, j.contentType)
                 obj.files[i] := j.attachmentName
             }
-            form.AppendJSON("payload_json", { content: obj.hasProp("content") ? obj.content : "", embeds: embeds ?? [], files: obj.files})
+            form.AppendJSON("payload_json", { content: obj.hasProp("content") ? obj.content : "", embeds: embeds ?? [], files: obj.files })
             contentType := form.contentType, body := form.data()
         }
         return this("POST", { header: { %"Content-Type"%: contentType }, body: body ?? obj })

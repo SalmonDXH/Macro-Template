@@ -4,6 +4,10 @@ class UI {
     static background_color := '000000'
     static text_color := 'ffffff'
     static title_color := 'ffffff'
+    static groupbox_size := 12
+    static text_size := 10
+
+
     static get_w_h_from_gui(g) {
         if g is Gui {
             g.GetClientPos(, , &w, &h)
@@ -15,6 +19,10 @@ class UI {
 
     static add_button(ctrl, context?) {
         return ctrl is Gui ? ctrl.AddButton('+Background' this.background_color, IsSet(context) ? context : '') : false
+    }
+
+    static add_checkbox(ctrl, context?, color := this.text_color) {
+        return ctrl is Gui ? ctrl.AddCheckbox('c' color, IsSet(context) ? context : '') : false
     }
 
     static add_text(ctrl, context, align := '') {
@@ -99,6 +107,16 @@ class UI {
         if parent_gui is Gui {
             g := Gui('-Caption -Border +AlwaysOnTop -Resize +Parent' parent_gui.Hwnd)
             g.BackColor := parent_gui.BackColor
+            g.SetFont('s' this.text_size)
+            return g
+        }
+        return false
+    }
+
+    static add_to_owner(parent_gui) {
+        if parent_gui is Gui {
+            g := Gui('+AlwaysOnTop -Resize +Owner' parent_gui.Hwnd)
+            g.BackColor := parent_gui.BackColor
             return g
         }
         return false
@@ -108,7 +126,9 @@ class UI {
         if g is Gui {
             c := IsSet(color) ? color : 'ffffff'
             g.GetClientPos(, , &w, &h)
-            return g.AddGroupBox('x0 y0 w' w ' h' h ' c' c, name).SetFont('bold s10')
+            gp := g.AddGroupBox('x0 y0 w' w ' h' h ' c' c, name)
+            gp.SetFont('bold s' this.groupbox_size)
+            return gp
         }
         return false
     }

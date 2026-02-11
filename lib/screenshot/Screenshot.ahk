@@ -3,6 +3,16 @@
 class Screenshot {
     static path := A_ScriptDir '\data\screenshot'
 
+    static screeshot_from_app(app, name?) {
+        if app is String and WinExist(app) {
+            WinGetPos(&x, &y, &w, &h, app)
+            return this.screenshot(x, y, w, h, name)
+        } else {
+            return false
+        }
+
+    }
+
     static screenshot(x, y, w, h, name?) {
         pToken := Gdip_Startup()
         if !pToken {

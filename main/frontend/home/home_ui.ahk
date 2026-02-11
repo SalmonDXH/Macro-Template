@@ -120,14 +120,23 @@ try {
     ;! Discord
     discord_user_id_text := UI.add_text(discord_misc_holder, 'User id:', '+Center')
     discord_user_id_edit := UI.add_edit(discord_misc_holder)
+    discord_user_id_edit.Value := Discord.get_value(Integer, 'WEBHOOK', 'user_id')
+    discord_user_id_edit.OnEvent('Change', (ctrl, *) => Discord.update_value(ctrl.Value, 'WEBHOOK', 'user_id', Integer))
     discord_config_button := UI.add_button(discord_misc_holder, 'Config')
+    discord_config_button.OnEvent('Click', OpenDiscordGUI)
 
     discord_webhook_test_button := UI.add_button(discord_misc_holder, 'Test')
     discord_webhook_edit := UI.add_edit(discord_misc_holder, , true)
-    discord_webhook_text := UI.add_text(discord_misc_holder, 'Webhook URL:', '+Center')
+    discord_webhook_edit.Value := Discord.get_webhook()
+    discord_webhook_edit.OnEvent('Change', (ctrl, *) => Discord.update_webhook(ctrl.Value))
+
+
+    discord_webhook_text := UI.add_text(discord_misc_holder, 'Webhook:', '+Center')
 
     discord_bot_text := UI.add_text(discord_misc_holder, 'Bot Token:', '+Center')
     discord_bot_edit := UI.add_edit(discord_misc_holder, , true)
+    discord_bot_edit.Value := Discord.get_value(String, 'BOT', 'token')
+    discord_bot_edit.OnEvent('Change', (ctrl, *) => Discord.update_value(ctrl.Value, 'BOT', 'token'))
     discord_bot_run_button := UI.add_button(discord_misc_holder, 'Run')
 
     UI.grid_layout(discord_misc_holder,
@@ -157,7 +166,7 @@ try {
     F3_keybind_button := UI.add_button(keybind_misc_holder, 'Reload (F3)')
     F4_keybind_button := UI.add_button(keybind_misc_holder, 'Pause (F4)')
     F5_keybind_button := UI.add_button(keybind_misc_holder, 'PS (F5)')
-    F6_keybind_button := UI.add_button(keybind_misc_holder, 'Discord Bot (F6)')
+    F6_keybind_button := UI.add_button(keybind_misc_holder, 'DC Bot (F6)')
     F7_keybind_button := UI.add_button(keybind_misc_holder, 'Custom (F7)')
 
     UI.grid_layout(keybind_misc_holder, [

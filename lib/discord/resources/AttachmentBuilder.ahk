@@ -7,23 +7,23 @@
  ***********************************************************************/
 
 Class AttachmentBuilder {
-	/**
-	 * new AttachmentBuilder()
-	 * @param File relative path to file
-	 */
-	__New(param) {
-		if !FileExist(param)
-			try Integer(param)
-			catch 
-				Throw Error("AttachmentBuilder: File does not exist",,param)
-		this.fileName := "image.png", this.file := param, this.isBitmap := 1
-		loop files param
-			this.file := A_LoopFileFullPath, this.fileName := A_LoopFileName, this.isBitmap := 0
-		this.attachmentName := "attachment://" this.fileName, this.contentType := this.isBitmap ? "image/png" : AttachmentBuilder.MimeType(this.file)
+    /**
+     * new AttachmentBuilder()
+     * @param File relative path to file
+     */
+    __New(param) {
+        if !FileExist(param)
+            try Integer(param)
+            catch
+                Throw Error("AttachmentBuilder: File does not exist", , param)
+        this.fileName := "image.png", this.file := param, this.isBitmap := 1
+        loop files param
+            this.file := A_LoopFileFullPath, this.fileName := A_LoopFileName, this.isBitmap := 0
+        this.attachmentName := "attachment://" this.fileName, this.contentType := this.isBitmap ? "image/png" : AttachmentBuilder.MimeType(this.file)
 
-	}
+    }
     static MimeType(path) {
-        n :=(f:=FileOpen(path, "r")).ReadUInt(), f.Close()
+        n := (f := FileOpen(path, "r")).ReadUInt(), f.Close()
         Return (n = 0x474E5089) ? "image/png"
         : (n = 0x38464947) ? "image/gif"
         : (n & 0xFFFF0000 = 0x4D42) ? "image/bmp"
