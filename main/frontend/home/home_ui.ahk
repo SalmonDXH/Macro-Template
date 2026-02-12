@@ -126,6 +126,8 @@ try {
     discord_config_button.OnEvent('Click', OpenDiscordGUI)
 
     discord_webhook_test_button := UI.add_button(discord_misc_holder, 'Test')
+    discord_webhook_test_button.OnEvent('Click', discord_webhook_test_send)
+
     discord_webhook_edit := UI.add_edit(discord_misc_holder, , true)
     discord_webhook_edit.Value := Discord.get_webhook()
     discord_webhook_edit.OnEvent('Change', (ctrl, *) => Discord.update_webhook(ctrl.Value))

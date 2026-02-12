@@ -20,8 +20,9 @@ DetectHiddenWindows(true)
 #Include ..\lib\program\Program.ahk
 
 Program.close_all()
+Program.run_all(['webhook', 'heartbeat'], Logging.path)
 
-Logging.flag := false
+Logging.flag := true
 
 Logging.debug('Load supported library', 'Starting')
 

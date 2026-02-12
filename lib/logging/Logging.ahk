@@ -47,16 +47,7 @@ class Logging {
         if this.flag {
             try {
                 if this._ensure_dir() {
-                    tc := (A_TickCount - this.runtime)
-                    h := tc // (3600000)
-                    m := Mod(tc // 60000, 60000)
-                    s := Mod(tc // 1000, 1000)
-                    time := ("["
-                        . (h > 9 ? h : "0" h) ":"
-                        . (m > 9 ? m : "0" m) ":"
-                        . (s > 9 ? s : "0" s)
-                        . "]")
-                    pad := Max(0, 8 - StrLen(level))
+                    time := '[' A_Hour ':' A_Min ':' A_Sec ']'
                     l_text := "[" . level "]"
                     return FileAppend(time ' ' l_text ' [' A_ScriptName ']' ' [' service '] ' context '`n', this.path)
                 } else {
