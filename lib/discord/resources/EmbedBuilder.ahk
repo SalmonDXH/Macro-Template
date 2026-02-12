@@ -145,7 +145,7 @@ Class EmbedBuilder {
      */
     setImage(image) {
         if image is AttachmentBuilder {
-            this.embedObj.image := {url: image.attachmentName}
+            this.embedObj.image := { url: image.attachmentName }
             return this
         }
         if !IsObject(image)

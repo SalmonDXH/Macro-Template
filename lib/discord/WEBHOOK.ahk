@@ -34,7 +34,31 @@ class Discord {
         return (this.check_webhook(val)) ? val : ''
     }
 
-    static send(data := {}) {
+    static send(data := {}, mention := false) {
+        if !this.check_webhook() {
+            return false
+        }
+        webhook := WebHookBuilder(this.get_webhook())
+        title := (data.HasProp('title')) ? data.title : ''
+        description := (data.HasProp('description')) ? data.description : ''
+        footer_description := (data.HasProp('footer')) ? data.footer : A_Hour ':' A_Min ':' A_Sec
+        image_path := (data.HasProp('image')) and data.image is String and FileExist(data.image) ? data.image : false
+        attachment := image_path ? AttachmentBuilder(image_path) : false
+
+        embed := EmbedBuilder()
+        embed.setTitle(title)
+        embed.setDescription(description)
+        embed.setFooter({ text: footer_description })
+        (data.HasProp('color')) ? embed.setColor(data.color) : false
+        (attachment) ? embed.setImage(attachment) : false
+        content := (mention and this.get_value(Integer, 'WEBHOOK', 'user_id') != '') ? '<@' this.get_value(Integer, 'WEBHOOK', 'user_id') '>' : ''
+        data_send := attachment ? { content: content, embeds: [embed], files: [attachment] } : { embeds: [embed] }
+        try {
+            return webhook.send(data_send)
+        } catch Error as e {
+            return e
+        }
+
 
     }
 }

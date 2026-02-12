@@ -4,6 +4,7 @@
 #SingleInstance Force
 SendMode('Event')
 DetectHiddenWindows(true)
+#MaxThreads 255
 
 
 ;!#############################################
@@ -16,7 +17,9 @@ DetectHiddenWindows(true)
 #Include ..\lib\file\__init__.ahk
 #Include ..\lib\discord\WEBHOOK.ahk
 #Include ..\lib\screenshot\Screenshot.ahk
+#Include ..\lib\program\Program.ahk
 
+Program.close_all()
 
 Logging.flag := false
 
