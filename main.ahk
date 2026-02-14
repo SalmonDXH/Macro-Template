@@ -6,7 +6,7 @@ Logging.debug('Load ui', 'UI')
 
 show_home_ui()
 
-F1:: Reload()
+F1:: SetSize()
+F3:: Reload()
 
-F3:: SendResult()
 Esc:: ExitApp()

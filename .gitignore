@@ -6,6 +6,7 @@
 *.json
 *.ini
 *.txt
+.vscode
 
 #!#############################
 #! LOCAL IMAGE SAVE

@@ -18,6 +18,7 @@ DetectHiddenWindows(true)
 #Include ..\lib\discord\WEBHOOK.ahk
 #Include ..\lib\screenshot\Screenshot.ahk
 #Include ..\lib\program\Program.ahk
+#Include ..\lib\utilities\__init__.ahk
 
 Program.close_all()
 Program.run_all(['webhook', 'heartbeat'], Logging.path)

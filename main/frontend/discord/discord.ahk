@@ -24,9 +24,21 @@ try {
     discord_activity_logs_checkbox.OnEvent('Click', (ctrl, *) => Discord.update_value(ctrl.Value, 'WEBHOOK', 'activity'))
 
     discord_mention_won_checkbox := UI.add_checkbox(discord_mention_holder, 'Won')
+    discord_mention_won_checkbox.Value := Discord.get_value(Integer, 'WEBHOOK', 'won')
+    discord_mention_won_checkbox.OnEvent('Click', (ctrl, *) => Discord.update_value(ctrl.Value, 'WEBHOOK', 'won'))
+
     discord_mention_lost_checkbox := UI.add_checkbox(discord_mention_holder, 'Lost')
+    discord_mention_lost_checkbox.Value := Discord.get_value(Integer, 'WEBHOOK', 'lost')
+    discord_mention_lost_checkbox.OnEvent('Click', (ctrl, *) => Discord.update_value(ctrl.Value, 'WEBHOOK', 'lost'))
+
     discord_mention_restart_checkbox := UI.add_checkbox(discord_mention_holder, 'Restart')
+    discord_mention_restart_checkbox.Value := Discord.get_value(Integer, 'WEBHOOK', 'restart')
+    discord_mention_restart_checkbox.OnEvent('Click', (ctrl, *) => Discord.update_value(ctrl.Value, 'WEBHOOK', 'restart'))
+
     discord_mention_disconnect_checkbox := UI.add_checkbox(discord_mention_holder, 'Disconnect')
+    discord_mention_disconnect_checkbox.Value := Discord.get_value(Integer, 'WEBHOOK', 'disconnect')
+    discord_mention_disconnect_checkbox.OnEvent('Click', (ctrl, *) => Discord.update_value(ctrl.Value, 'WEBHOOK', 'disconnect'))
+
     UI.grid_layout(discord_mention_holder, [
         [discord_activity_logs_checkbox],
         [discord_mention_won_checkbox, discord_mention_lost_checkbox],

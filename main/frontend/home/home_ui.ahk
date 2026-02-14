@@ -51,14 +51,14 @@ try {
     home_ui_drag_bar := UI.add_to_parent(home_ui)
     home_ui_drag_bar_text := home_ui_drag_bar.AddText('x0 y0 w800 h20 c' UI.title_color, Macro_Config.name ' v' Macro_Config.version ' by ' Credit_Config.owner)
     home_ui_drag_bar_text.SetFont('bold s10')
-    home_ui_drag_bar_text.OnEvent('Click', (*) => UI.drag(home_ui.Hwnd, set_size))
+    home_ui_drag_bar_text.OnEvent('Click', (*) => UI.drag(home_ui.Hwnd, SetSize))
     UI.gui_move(home_ui_drag_bar, 30, 5, 800, 20)
     Logging.debug('Create drag bar for home ui', 'Home UI')
 } catch Error as e {
     Logging.critical('Fail to create  drag bar', 'Home UI', e)
 }
 
-set_size() {
+SetSize() {
     if WinExist(home_ui.Hwnd) {
         WinActivate(home_ui.Hwnd)
         if WinExist(Roblox_Config.window) {
@@ -122,10 +122,6 @@ AddToLogs(message) {
     logs_text.Value := logs_text.Value message '`n'
 }
 
-
-SendResult() {
-    Program.send_wm('webhook', { game_mode: 'Hello' }, 2)
-}
 
 ;?#############################################
 ;? MISC HOLDER
