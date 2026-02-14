@@ -3,17 +3,17 @@
 class Screenshot {
     static path := A_ScriptDir '\data\screenshot'
 
-    static screeshot_from_app(app, name?) {
+    static screeshot_from_app(app, x_custom := 0, y_custom := 0, w_custom := 0, h_custom := 0, name?) {
         if app is String and WinExist(app) {
             WinGetPos(&x, &y, &w, &h, app)
-            return this.screenshot(x, y, w, h, name)
+            return this.screenshot(x + x_custom, y + y_custom, (w_custom) ? w_custom : w, (h_custom) ? h_custom : h, name)
         } else {
             return false
         }
-
     }
 
     static screenshot(x, y, w, h, name?) {
+        DetectHiddenWindows(true)
         pToken := Gdip_Startup()
         if !pToken {
             return

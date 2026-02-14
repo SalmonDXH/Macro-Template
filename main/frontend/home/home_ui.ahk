@@ -92,10 +92,39 @@ try {
 try {
     dashboard_holder := UI.add_to_parent(home_ui)
     UI.gui_move(dashboard_holder, 30 + 800 + 20, 30, UI.width - 850 - 30, 600)
-    UI.gui_groupbox(dashboard_holder, 'Dashboard')
     Logging.debug('Create Dashboard holder ui', 'Home UI')
+
+    config_holder := UI.add_to_parent(dashboard_holder)
+    logs_holder := UI.add_to_parent(dashboard_holder)
+    task_holder := UI.add_to_parent(dashboard_holder)
+    UI.grid_layout(dashboard_holder,
+        [
+            [config_holder],
+            [task_holder],
+            [logs_holder],
+        ]
+    )
+    UI.gui_groupbox(config_holder, 'Configuration')
+    UI.gui_groupbox(task_holder, 'Task')
+    UI.gui_groupbox(logs_holder, 'Activity Logs')
+
+    logs_text := UI.add_text(logs_holder)
+    UI.grid_layout(logs_holder, [[logs_text]], , , 10, 25)
+
 } catch Error as e {
     Logging.critical('Fail to create dashboard holder ui', 'Home UI', e)
+}
+
+AddToLogs(message) {
+    if Discord.get_value(Integer, 'WEBHOOK', 'activity') {
+        Program.send_wm('webhook', { message: message }, 1)
+    }
+    logs_text.Value := logs_text.Value message '`n'
+}
+
+
+SendResult() {
+    Program.send_wm('webhook', { game_mode: 'Hello' }, 2)
 }
 
 ;?#############################################

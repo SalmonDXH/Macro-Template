@@ -6,14 +6,7 @@
  * @version 3.0.0
  ***********************************************************************/
 
-DetectHiddenWindows(true)
-SplitPath A_AhkPath, &exeName
 
-exe64 := "AutoHotkey64.exe"
-exe32 := "AutoHotkey32.exe"
-
-F1:: {
-    MsgBox(WinExist('main ahk_class AutoHotkey'))
+Loop {
+    1000
 }
-
-F2:: ExitApp

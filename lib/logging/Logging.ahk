@@ -1,6 +1,6 @@
 class Logging {
     static flag := true
-    static path := A_ScriptDir '\data\debug_' A_Year '_' A_Mon '_' A_DD '_' A_Hour '_' A_Min '_' A_Sec '.log'
+    static path := A_ScriptDir '\data\debug\debug_' A_Year '_' A_Mon '_' A_DD '_' A_Hour '_' A_Min '_' A_Sec '.log'
     static runtime := A_TickCount
 
     static trace(context, service) {
@@ -68,7 +68,8 @@ class Logging {
     static _ensure_dir() {
         try {
             SplitPath(this.path, , &dir)
-            return DirExist(dir) ? true : DirCreate(dir)
+            (DirExist(dir)) ? true : DirCreate(dir)
+            return true
         } catch Error as e {
             MsgBox(e.Message '`n' e.What '`n' e.File, 'Logs Error')
             return false

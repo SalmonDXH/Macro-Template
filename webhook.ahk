@@ -14,6 +14,7 @@ try {
 Logging.debug('Webhook launched', 'Start')
 
 OnMessage(0x5550, webhook_received)
+OnMessage(0x004A, webhook_data)
 
 roblox_window := 'ahk_exe RobloxPlayerBeta.exe'
 webhook_received(lparam, *) {
@@ -66,4 +67,70 @@ webhook_test() {
 
 }
 
-F2:: ExitApp()
+webhook_data(wparam, lparam, *) {
+    data := Program.receive(wparam, lparam)
+    if data and data.HasProp('type') and data.HasProp('data') {
+        switch data.type {
+            case 1:
+                if data.data.Has('message') {
+                    SetTimer(() => webhook_logs(data.data['message']), -1)
+                }
+            case 2:
+                SetTimer(() => webhook_match_ended(data), -1)
+        }
+    }
+    return 1
+}
+
+webhook_result() {
+
+}
+
+webhook_logs(message) {
+    try {
+        result := Discord.send({ description: message })
+        if result is Error {
+            Logging.error('Fail to send logs webhook', 'Logs', result)
+        } else if result {
+            if result.HasProp('status') {
+                if result.status = 200 {
+                    Logging.debug('Send webhook logs: ' message, 'Logs')
+                } else {
+                    Logging.error('Fail to send logs webhook: ' result.status, 'Logs')
+                }
+            }
+        } else {
+            Logging.error('Invalid webhook', 'Logs')
+        }
+
+    } catch Error as e {
+        Logging.error('Fail to send logs webhook', 'Logs', e)
+    }
+}
+
+webhook_match_ended(data) {
+    p := Screenshot.screeshot_from_app(roblox_window, , , , , 'result')
+    if p {
+        try {
+            d := {
+                title: ((data.HasProp('game_mode')) ? data.game_mode : 'Match') ' Finished',
+                image: (p) ? p : '',
+                color: ((data.HasProp('color')) ? data.color : 0x90EE90)
+            }
+            Discord.send(d, (data.HasProp('mention')) ? data.mention : false)
+
+        } catch Error as e {
+            Logging.error('Fail to send result webhook', 'Match ended', e)
+        }
+
+        try FileDelete(p)
+
+    } else {
+        Logging.error('Fail to capture roblox because there is no roblox instance', 'Screenshot')
+    }
+
+}
+
+Loop {
+    Sleep 1000
+}

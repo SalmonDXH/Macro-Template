@@ -25,8 +25,8 @@ class UI {
         return ctrl is Gui ? ctrl.AddCheckbox('c' color, IsSet(context) ? context : '') : false
     }
 
-    static add_text(ctrl, context, align := '') {
-        return ctrl is Gui ? ctrl.AddText('c' this.text_color ' ' align, context) : false
+    static add_text(ctrl, context?, align := '') {
+        return ctrl is Gui ? ctrl.AddText('c' this.text_color ' ' align, (IsSet(context)) ? context : '') : false
     }
 
     static add_edit(ctrl, context?, private := false) {
