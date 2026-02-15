@@ -177,10 +177,15 @@ try {
     ;! Roblox
     roblox_private_server_text := UI.add_text(roblox_misc_holder, 'PS URL:', '+Center')
     roblox_private_server_edit := UI.add_edit(roblox_misc_holder)
+    roblox_private_server_edit.Value := Roblox.get_value(String, 'RECONNECTION', 'url')
+    roblox_private_server_edit.OnEvent('Change', (ctrl, *) => Roblox.update_ps_url(ctrl.Value))
     roblox_private_server_test_button := UI.add_button(roblox_misc_holder, 'Test')
 
     roblox_reconnect_every_text := UI.add_text(roblox_misc_holder, 'Reconnect every (h):', '+Center')
     roblox_reconnect_every_edit := UI.add_edit(roblox_misc_holder, 1)
+    roblox_reconnect_every_edit.Value := Roblox.get_value(Integer, 'RECONNECTION', 'fre', 1)
+    roblox_reconnect_every_edit.OnEvent('Change', (ctrl, *) => Roblox.update_value(ctrl.Value, 'RECONNECTION', 'fre', Integer))
+
     UI.grid_layout(roblox_misc_holder, [
         [roblox_private_server_text, roblox_private_server_edit, roblox_private_server_test_button],
         [roblox_reconnect_every_text, roblox_reconnect_every_edit],

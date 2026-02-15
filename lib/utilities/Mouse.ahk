@@ -17,4 +17,10 @@ class Mouse {
         SendInput("{WheelUp Down}")
         sleep delay
     }
+
+    static FT_click(data) {
+        if data and data.HasProp('x') and data.HasProp('y') {
+            this.click(data.x, data.y)
+        }
+    }
 }

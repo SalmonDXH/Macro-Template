@@ -8,26 +8,6 @@ DetectHiddenWindows(true)
 
 
 ;!#############################################
-;! OTHER LIBRARY
-;!#############################################
-
-#Include ..\lib\security\Scriptguard.ahk
-#Include ..\lib\logging\Logging.ahk
-#Include ..\lib\ui\func\UI.ahk
-#Include ..\lib\file\__init__.ahk
-#Include ..\lib\discord\WEBHOOK.ahk
-#Include ..\lib\screenshot\Screenshot.ahk
-#Include ..\lib\program\Program.ahk
-#Include ..\lib\utilities\__init__.ahk
-
-Program.close_all()
-Program.run_all(['webhook', 'heartbeat'], Logging.path)
-
-Logging.flag := true
-
-Logging.debug('Load supported library', 'Starting')
-
-;!#############################################
 ;! GENERAL CONFIGURATION
 ;!#############################################
 
@@ -58,7 +38,28 @@ Roblox_Config := {
 
 Game_Config := {}
 
-Logging.debug('Load Config', 'Starting')
+;!#############################################
+;! OTHER LIBRARY
+;!#############################################
+
+#Include ..\lib\security\Scriptguard.ahk
+#Include ..\lib\logging\Logging.ahk
+#Include ..\lib\ui\func\UI.ahk
+#Include ..\lib\file\__init__.ahk
+#Include ..\lib\discord\WEBHOOK.ahk
+#Include ..\lib\screenshot\Screenshot.ahk
+#Include ..\lib\program\Program.ahk
+#Include ..\lib\utilities\__init__.ahk
+#Include ..\lib\findtext\CustomFindText.ahk
+
+
+Program.close_all()
+Program.run_all(['webhook', 'heartbeat'], Logging.path)
+
+FT.window := Roblox_Config.window
+Logging.flag := true
+
+Logging.debug('Load supported library', 'Starting')
 
 
 ;!#############################################
@@ -70,7 +71,7 @@ Logging.debug('Load Config', 'Starting')
 Logging.debug('Load macro library', 'Starting')
 
 ;!#############################################
-;! CONNECTION BETWEEN OTHER AHK
+;! CONNECTION BETWEEN OTHER AHK (API)
 ;!#############################################
 
 ;!#############################################

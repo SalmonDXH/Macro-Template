@@ -20,9 +20,9 @@ class Discord {
         this.f.write(section, key, s)
     }
 
-    static get_value(t, section, key) {
+    static get_value(t, section, key, d := '') {
         val := this.f.read(section, key)
-        return (val is t or t = String) ? val : ''
+        return (val is t or t = String) ? val : d
     }
 
     static update_webhook(val) {

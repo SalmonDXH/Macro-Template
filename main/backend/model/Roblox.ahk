@@ -32,9 +32,18 @@ class Roblox {
         return "roblox://placeID=" placeID "&linkCode=" linkCode
     }
 
-    static get_value(t, section, key) {
+    static get_value(t, section, key, d := '') {
         val := this.f.read(section, key)
-        return (val is t or t = String) ? val : ''
+        if t = String {
+            return val ? val : d
+        }
+        return val is t and val ? val : d
+    }
+
+    static update_ps_url(url) {
+        if this.check_ps_url(url) or url = '' {
+            this.update_value(url, 'RECONNECTION', 'url')
+        }
     }
 
     static update_value(val, section, key, t?) {
@@ -48,6 +57,5 @@ class Roblox {
         }
         this.f.write(section, key, s)
     }
-
 
 }
