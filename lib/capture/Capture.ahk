@@ -71,7 +71,7 @@ class Capture {
         }
     }
 
-    static capture_pos(ctrl) {
+    static capture_pos(ctrl, &x?, &y?) {
         if WinExist(this.window) {
             WinGetPos(&x, &y, , , ctrl)
             WinActivate(this.window)
@@ -90,9 +90,8 @@ class Capture {
             KeyWait('LButton')
             SetTimer(update_tool_tip, 0)
             get_current_pos(&x, &y)
-            A_Clipboard := x ', ' y
-            ToolTip('Saved')
             ToolTip('')
+            return true
         }
     }
 }
