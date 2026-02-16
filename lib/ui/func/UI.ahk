@@ -32,9 +32,9 @@ class UI {
     static add_edit(ctrl, context?, private := false, var_name?) {
         return ctrl is Gui ? ctrl.AddEdit('c000000 ' (private ? '+Password ' : '') ' ' (IsSet(var_name) ? 'v' var_name : ''), IsSet(context) ? context : '') : false
     }
-    static add_ddl(ctrl, ar?, var_name?) {
+    static add_ddl(ctrl, ar := [], var_name?) {
         if ctrl is Gui {
-            a := ctrl.AddDDL('c000000' ' ' (IsSet(var_name) ? 'v' var_name : ''), (IsSet(ar) and ar is Array) ? ar : [])
+            a := ctrl.AddDDL('c000000' ' ' (IsSet(var_name) ? 'v' var_name : ''), ar)
             try a.Choose(1)
             return a
         } else {
