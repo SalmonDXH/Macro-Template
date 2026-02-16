@@ -47,7 +47,7 @@ class Capture {
                 }
                 WinGetPos(&x, &y, , , ctrl)
                 WinActivate(this.window)
-                WinMove(x - 800, y, 800, 598, this.window)
+                WinMove(x - 850, y, 800, 598, this.window)
                 capture_zone := Gui('+AlwaysOnTop -Caption -Border +Resize', 'Capture Zone')
                 capture_zone.BackColor := 'c5dced6'
 
@@ -68,6 +68,31 @@ class Capture {
 
         } else {
             MsgBox('Target window not found')
+        }
+    }
+
+    static capture_pos(ctrl) {
+        if WinExist(this.window) {
+            WinGetPos(&x, &y, , , ctrl)
+            WinActivate(this.window)
+            WinMove(x - 800, y, 800, 598, this.window)
+            static get_current_pos(&x, &y) {
+                MouseGetPos(&x, &y)
+                return x ', ' y
+            }
+
+            static update_tool_tip() {
+                ToolTip('Click to capture:`n' get_current_pos(&x, &y), x + 10, y + 10)
+            }
+            SetTimer(update_tool_tip, 1)
+            WinActivate(this.window)
+            KeyWait('LButton', 'D')
+            KeyWait('LButton')
+            SetTimer(update_tool_tip, 0)
+            get_current_pos(&x, &y)
+            A_Clipboard := x ', ' y
+            ToolTip('Saved')
+            ToolTip('')
         }
     }
 }

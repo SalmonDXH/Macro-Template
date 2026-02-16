@@ -17,8 +17,11 @@ roblox_window := 'ahk_exe RobloxPlayerBeta.exe'
 Capture.window := roblox_window
 
 capture_area_button := UI.add_button(main_ui, 'Capture Area')
-capture_area_button.OnEvent('Click', (ctrl, *) => Capture.start(ctrl.Hwnd))
+capture_area_button.OnEvent('Click', (*) => Capture.start(main_ui.Hwnd))
+
+capture_pos_button := UI.add_button(main_ui, 'Capture Pos')
+capture_pos_button.OnEvent('Click', (*) => Capture.capture_pos(main_ui.Hwnd))
 
 UI.grid_layout(main_ui, [
-    [capture_area_button]
+    [capture_area_button, capture_pos_button]
 ], , , 10, 10)
