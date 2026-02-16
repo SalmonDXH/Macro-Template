@@ -52,4 +52,5 @@ try {
 OpenDiscordGUI(*) {
     Logging.trace('User open Discord Config ui', 'User')
     UI.gui_simple(discord_gui, discord_width, discord_height)
+    return discord_gui
 }

@@ -21,16 +21,25 @@ class UI {
         return ctrl is Gui ? ctrl.AddButton('+Background' this.background_color, IsSet(context) ? context : '') : false
     }
 
-    static add_checkbox(ctrl, context?, color := this.text_color) {
-        return ctrl is Gui ? ctrl.AddCheckbox('c' color, IsSet(context) ? context : '') : false
+    static add_checkbox(ctrl, context?, color := this.text_color, var_name?) {
+        return ctrl is Gui ? ctrl.AddCheckbox('c' color ' ' (IsSet(var_name) ? 'v' var_name : ''), IsSet(context) ? context : '') : false
     }
 
     static add_text(ctrl, context?, align := '') {
         return ctrl is Gui ? ctrl.AddText('c' this.text_color ' ' align, (IsSet(context)) ? context : '') : false
     }
 
-    static add_edit(ctrl, context?, private := false) {
-        return ctrl is Gui ? ctrl.AddEdit('c000000 ' (private ? '+Password ' : ''), IsSet(context) ? context : '') : false
+    static add_edit(ctrl, context?, private := false, var_name?) {
+        return ctrl is Gui ? ctrl.AddEdit('c000000 ' (private ? '+Password ' : '') ' ' (IsSet(var_name) ? 'v' var_name : ''), IsSet(context) ? context : '') : false
+    }
+    static add_ddl(ctrl, ar?, var_name?) {
+        if ctrl is Gui {
+            a := ctrl.AddDDL('c000000' ' ' (IsSet(var_name) ? 'v' var_name : ''), (IsSet(ar) and ar is Array) ? ar : [])
+            try a.Choose(1)
+            return a
+        } else {
+            return false
+        }
     }
 
     static grid_layout(parent_gui, control_list := [], margin_x := 10, margin_y := 10, padding_x := 0, padding_y := 0) {

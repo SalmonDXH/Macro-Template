@@ -19,6 +19,8 @@ show_home_ui() {
     UI.gui_simple(home_ui, UI.width, UI.height)
 }
 
+global home_temp_gui := false
+
 
 ;?#############################################
 ;? UTILITIES BUTTON
@@ -105,6 +107,15 @@ try {
         ]
     )
     UI.gui_groupbox(config_holder, 'Configuration')
+
+    team_button := UI.add_button(config_holder, 'Team')
+    team_button.OnEvent('Click', (*) => open_home_team_ui(OpenTeamGUI))
+    mode_button := UI.add_button(config_holder, 'Mode')
+    coordinate_button := UI.add_button(config_holder, 'Coordinate')
+    setting_button := UI.add_button(config_holder, 'Setting')
+
+    UI.grid_layout(config_holder, [[team_button, mode_button], [coordinate_button, setting_button]], , , 10, 25)
+
     UI.gui_groupbox(task_holder, 'Task')
     UI.gui_groupbox(logs_holder, 'Activity Logs')
 
@@ -148,7 +159,7 @@ try {
     discord_user_id_edit.Value := Discord.get_value(Integer, 'WEBHOOK', 'user_id')
     discord_user_id_edit.OnEvent('Change', (ctrl, *) => Discord.update_value(ctrl.Value, 'WEBHOOK', 'user_id', Integer))
     discord_config_button := UI.add_button(discord_misc_holder, 'Config')
-    discord_config_button.OnEvent('Click', OpenDiscordGUI)
+    discord_config_button.OnEvent('Click', (*) => open_home_team_ui(OpenDiscordGUI))
 
     discord_webhook_test_button := UI.add_button(discord_misc_holder, 'Test')
     discord_webhook_test_button.OnEvent('Click', discord_webhook_test_send)
@@ -220,4 +231,14 @@ try {
     Logging.debug('Create all element needed for Support holder UI', 'Support Holder')
 } catch Error as e {
     Logging.critical('Fail to create misc holder ui', 'Home UI', e)
+}
+
+open_home_team_ui(open_function) {
+    global home_temp_gui
+    if home_temp_gui is Gui {
+        home_temp_gui.Hide()
+    }
+    if open_function is Func {
+        home_temp_gui := open_function()
+    }
 }
