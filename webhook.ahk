@@ -82,9 +82,6 @@ webhook_data(wparam, lparam, *) {
     return 1
 }
 
-webhook_result() {
-
-}
 
 webhook_logs(message) {
     try {
