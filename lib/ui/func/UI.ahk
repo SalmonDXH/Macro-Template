@@ -42,6 +42,10 @@ class UI {
         }
     }
 
+    static add_pic(ctrl, path := '') {
+        return ctrl is Gui ? ctrl.AddPicture(, (FileExist(path) ? path : '')) : false
+    }
+
     static grid_layout(parent_gui, control_list := [], margin_x := 10, margin_y := 10, padding_x := 0, padding_y := 0) {
         if !(parent_gui is Gui) {
             return Type(parent_gui) ' is not a Gui'

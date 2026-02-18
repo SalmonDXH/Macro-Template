@@ -109,9 +109,10 @@ try {
     UI.gui_groupbox(config_holder, 'Configuration')
 
     team_button := UI.add_button(config_holder, 'Team')
-    team_button.OnEvent('Click', (*) => open_home_team_ui(OpenTeamGUI))
+    team_button.OnEvent('Click', (*) => open_home_ui(OpenTeamGUI))
     mode_button := UI.add_button(config_holder, 'Mode')
     coordinate_button := UI.add_button(config_holder, 'Coordinate')
+    coordinate_button.OnEvent('Click', (*) => open_home_ui(OpenCoordinateGUI))
     setting_button := UI.add_button(config_holder, 'Setting')
 
     UI.grid_layout(config_holder, [[team_button, mode_button], [coordinate_button, setting_button]], , , 10, 25)
@@ -159,7 +160,7 @@ try {
     discord_user_id_edit.Value := Discord.get_value(Integer, 'WEBHOOK', 'user_id')
     discord_user_id_edit.OnEvent('Change', (ctrl, *) => Discord.update_value(ctrl.Value, 'WEBHOOK', 'user_id', Integer))
     discord_config_button := UI.add_button(discord_misc_holder, 'Config')
-    discord_config_button.OnEvent('Click', (*) => open_home_team_ui(OpenDiscordGUI))
+    discord_config_button.OnEvent('Click', (*) => open_home_ui(OpenDiscordGUI))
 
     discord_webhook_test_button := UI.add_button(discord_misc_holder, 'Test')
     discord_webhook_test_button.OnEvent('Click', discord_webhook_test_send)
@@ -233,7 +234,7 @@ try {
     Logging.critical('Fail to create misc holder ui', 'Home UI', e)
 }
 
-open_home_team_ui(open_function) {
+open_home_ui(open_function) {
     global home_temp_gui
     if home_temp_gui is Gui {
         home_temp_gui.Hide()

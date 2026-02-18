@@ -15,7 +15,9 @@ DetectHiddenWindows(true)
 Credit_Config := {
     owner: 'Salmon',
     social: {
-        discord: 'discord.gg/salmon'
+        discord: 'https://www.discord.gg/salmon',
+        youtube: '',
+        website: ''
     }
 }
 

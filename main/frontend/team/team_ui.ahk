@@ -43,6 +43,7 @@ try {
             ], , , 10, 25)
         }
     }
+    Logging.debug('Create team UI', 'Team')
 } catch Error as e {
     Logging.critical('Fail to create team ui', 'Team', e)
 }
