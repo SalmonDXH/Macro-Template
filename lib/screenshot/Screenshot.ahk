@@ -12,7 +12,7 @@ class Screenshot {
         }
     }
 
-    static screenshot(x, y, w, h, name?) {
+    static screenshot(x, y, w, h, name?, path?) {
         DetectHiddenWindows(true)
         pToken := Gdip_Startup()
         if !pToken {
@@ -34,7 +34,7 @@ class Screenshot {
         }
 
         ; Save to temp file
-        tempPath := this.path "\cropped_" A_TickCount (IsSet(name) ? '_' name : '') ".png"
+        tempPath := IsSet(path) ? path '\' (IsSet(name) ? StrReplace(name, ' ', '_') : 'no_name') '.png' : this.path "\cropped_" A_TickCount (IsSet(name) ? '_' name : '') ".png"
         SplitPath(tempPath, , &dir)
         DirExist(dir) ? true : DirCreate(dir)
         Gdip_SaveBitmapToFile(pCroppedBitmap, tempPath)

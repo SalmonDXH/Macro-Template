@@ -34,9 +34,9 @@ try {
     coordinate_unit_bottom_array := [[UI.add_text(coordinate_unit_holder, 'Unit Coordinate', '+Center')], []]
     Loop Team.number_of_placement {
         if coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Length >= coordinate_maximum_buttons {
-            coordinate_unit_bottom_array.Push([UI.add_button(coordinate_unit_holder, 'Unit ' A_Index)])
+            coordinate_unit_bottom_array.Push([UI.add_button(coordinate_unit_holder, 'Unit ' A_Index '`n(0 , 0)')])
         } else {
-            coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Push(UI.add_button(coordinate_unit_holder, 'Unit ' A_Index))
+            coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Push(UI.add_button(coordinate_unit_holder, 'Unit ' A_Index '`n(0 , 0)'))
         }
         if Team.number_of_placement = A_Index {
             while coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Length < coordinate_maximum_buttons {
