@@ -1,6 +1,7 @@
 class Coordinate {
     static w := 1280
     static h := 640
+    static image_dir := A_ScriptDir '\data\map_image'
     static data := {
         map_name: 'None',
         game_mode: 'None',
