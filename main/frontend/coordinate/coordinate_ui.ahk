@@ -42,9 +42,13 @@ try {
     coordinate_unit_bottom_array := [[coordinate_prev_slot_button, coordinate_slot_title_text, coordinate_next_slot_button], []]
     Loop Team.number_of_placement {
         if coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Length >= coordinate_maximum_buttons {
-            coordinate_unit_bottom_array.Push([UI.add_button(coordinate_unit_holder, 'Unit ' A_Index '`n(0 , 0)')])
+            new_button := UI.add_button(coordinate_unit_holder, 'Unit ' A_Index '`n(0 , 0)', 'Unit_' A_Index)
+            new_button.OnEvent('Click', (ctrl, *) => MsgBox(ctrl.Name))
+            coordinate_unit_bottom_array.Push([new_button])
         } else {
-            coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Push(UI.add_button(coordinate_unit_holder, 'Unit ' A_Index '`n(0 , 0)'))
+            new_button := UI.add_button(coordinate_unit_holder, 'Unit ' A_Index '`n(0 , 0)', 'Unit_' A_Index)
+            new_button.OnEvent('Click', (ctrl, *) => MsgBox(ctrl.Name))
+            coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Push(new_button)
         }
         if Team.number_of_placement = A_Index {
             while coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Length < coordinate_maximum_buttons {
@@ -93,6 +97,4 @@ ScreenshotMap(*) {
     } else {
         MessageBox.warn('Couldnt find roblox instance, please open it or use roblox website instead of roblox Microsoft', 'Error')
     }
-
-
 }

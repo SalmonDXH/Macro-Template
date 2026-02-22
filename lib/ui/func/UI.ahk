@@ -17,8 +17,8 @@ class UI {
         }
     }
 
-    static add_button(ctrl, context?) {
-        return ctrl is Gui ? ctrl.AddButton('+Background' this.background_color, IsSet(context) ? context : '') : false
+    static add_button(ctrl, context?, var_name?) {
+        return ctrl is Gui ? ctrl.AddButton('+Background' this.background_color ' ' (IsSet(var_name) ? 'v' var_name : ''), IsSet(context) ? context : '') : false
     }
 
     static add_checkbox(ctrl, context?, color := this.text_color, var_name?) {
