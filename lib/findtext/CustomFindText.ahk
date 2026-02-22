@@ -21,8 +21,8 @@ class FT {
         try {
             if WinExist(this.window) and image is String {
                 WinGetPos(&x, &y, , , this.window)
-                if FindText(&x_found, &y_found, x + x_begin, y + x_begin, x + x_end, y + y_end, tolerance, tolerance, image) {
-                    return { x: x_found - x, y: y_found }
+                if FindText(&x_found, &y_found, x + x_begin, y + y_begin, x + x_end, y + y_end, tolerance, tolerance, image) {
+                    return { x: x_found - x, y: y_found - y }
                 } else {
                     return false
                 }
