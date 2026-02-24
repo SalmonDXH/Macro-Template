@@ -21,8 +21,11 @@ try {
     UI.gui_move(coordinate_unit_holder, 0, 300, Coordinate.w - 860, 600 - 300)
 
     coordinate_map_ddl := UI.add_ddl(coordinate_ddl_holder, ['Test'], 'map')
+    coordinate_map_ddl.OnEvent('Change', FillCoordinateGUI)
     coordinate_map_title := UI.add_text(coordinate_ddl_holder, 'Map:', '+Right')
+
     coordinate_gamemode_ddl := UI.add_ddl(coordinate_ddl_holder, ['default', 'test'], 'game_mode')
+    coordinate_gamemode_ddl.OnEvent('Change', FillCoordinateGUI)
     coordinate_gamemode_title := UI.add_text(coordinate_ddl_holder, 'Gamemode:', '+Right')
 
 
@@ -33,6 +36,7 @@ try {
     coordinate_reset_everything_button := UI.add_button(coordinate_ddl_holder, 'Reset everything')
 
     coordinate_maximum_buttons := Integer(Floor(Sqrt(Team.number_of_placement)))
+
     coordinate_next_slot_button := UI.add_button(coordinate_unit_holder, '>')
     coordinate_next_slot_button.SetFont('s14')
     coordinate_next_slot_button.OnEvent('Click', NextCoordinateSlot)
@@ -45,11 +49,11 @@ try {
     Loop Team.number_of_placement {
         if coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Length >= coordinate_maximum_buttons {
             new_button := UI.add_button(coordinate_unit_holder, 'Unit ' A_Index '`n(0 , 0)', 'Unit_' A_Index)
-            new_button.OnEvent('Click', (ctrl, *) => MsgBox(ctrl.Name))
+            new_button.OnEvent('Click', (ctrl, *) => Coordinate.MapDrawing.click_unit_draw(ctrl.Name, coordinate_slot_title_text, ctrl))
             coordinate_unit_bottom_array.Push([new_button])
         } else {
             new_button := UI.add_button(coordinate_unit_holder, 'Unit ' A_Index '`n(0 , 0)', 'Unit_' A_Index)
-            new_button.OnEvent('Click', (ctrl, *) => MsgBox(ctrl.Name))
+            new_button.OnEvent('Click', (ctrl, *) => Coordinate.MapDrawing.click_unit_draw(ctrl.Name, coordinate_slot_title_text, ctrl))
             coordinate_unit_bottom_array[coordinate_unit_bottom_array.Length].Push(new_button)
         }
         if Team.number_of_placement = A_Index {
@@ -58,6 +62,10 @@ try {
             }
         }
     }
+    coordinate_save_button := UI.add_button(coordinate_unit_holder, 'Save')
+    coordinate_save_button.OnEvent('Click', (*) => Coordinate.save(coordinate_map_ddl.Text, coordinate_gamemode_ddl.Text))
+
+    coordinate_unit_bottom_array.Push([false, false, coordinate_save_button])
     UI.grid_layout(coordinate_ddl_holder, [
         [coordinate_gamemode_title, coordinate_gamemode_ddl],
         [coordinate_map_title, coordinate_map_ddl],
@@ -71,6 +79,7 @@ try {
 }
 
 Coordinate.MapDrawing.holder := coordinate_map_holder
+Coordinate.MapDrawing.main_holder := coordinate_gui
 
 OpenCoordinateGUI(*) {
     Logging.trace('User open Coordinate ui', 'User')
@@ -94,17 +103,28 @@ RefreshCoordinateButton(*) {
 NextCoordinateSlot(*) {
     current_slot := Integer(StrSplit(coordinate_slot_title_text.Text, 'Slot ')[2])
     if current_slot + 1 <= Team.number_of_slot {
-        coordinate_slot_title_text.Text := 'Slot ' current_slot + 1
-        Coordinate.MapDrawing.change_coordinate_slot('Slot ' current_slot + 1)
+        UpdateCoordinateSlot(current_slot + 1)
     }
 }
 
 PrevCoordinateSlot(*) {
     current_slot := Integer(StrSplit(coordinate_slot_title_text.Text, 'Slot ')[2])
     if current_slot - 1 > 0 {
-        coordinate_slot_title_text.Text := 'Slot ' current_slot - 1
-        Coordinate.MapDrawing.change_coordinate_slot('Slot ' current_slot - 1)
+        UpdateCoordinateSlot(current_slot - 1)
     }
+}
+
+UpdateCoordinateSlot(new_slot_num) {
+    coordinate_slot_title_text.Text := 'Slot ' new_slot_num
+    data := Coordinate.MapDrawing.change_coordinate_slot('Slot ' new_slot_num)
+    Loop Team.number_of_placement {
+        if data.Has('Unit ' A_Index) {
+            coordinate_unit_holder['Unit_' A_Index].Text := 'Unit ' A_Index '`n(' data['Unit ' A_Index].x ' , ' data['Unit ' A_Index].y ')'
+        } else {
+            coordinate_unit_holder['Unit_' A_Index].Text := 'Unit ' A_Index '`n(' 0 ' , ' 0 ')'
+        }
+    }
+
 }
 
 DrawAllCoordinate(*) {
@@ -126,9 +146,9 @@ DrawAllCoordinate(*) {
                     Coordinate.MapDrawing.draw(
                         unit, slot, {
                             x: x, y: y
-                        }
+                        }, coordinate_unit_holder['Unit_' A_Index]
                     )
-                    coordinate_unit_holder['Unit_' A_Index].Text := 'Unit ' A_Index '`n(' x ' , ' y ')'
+
                 }
             }
         }

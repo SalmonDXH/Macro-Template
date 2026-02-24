@@ -16,7 +16,16 @@ class Coordinate {
         return this.data.config
     }
 
-    static save(map_name, game_mode := 'default', data := Map()) {
+    static save(map_name, game_mode := 'default') {
+        coordinates := Coordinate.MapDrawing.Coordinate
+        data := Map()
+        for slot, items in coordinates {
+            data[slot] := Map()
+            for unit, ctrl in items {
+                ctrl.GetPos(&x, &y)
+                data[slot][unit] := Map('x', x, 'y', y)
+            }
+        }
         file_name := StrReplace(game_mode '\' map_name, ' ', '_')
         JsonFile(A_ScriptDir '\data\coordinate\' file_name '.json').save(data)
     }
@@ -25,35 +34,71 @@ class Coordinate {
         ; COORDINATE := Map( 'Slot 1', Map('Unit 1' , Gui.Control : Text) )
         static Coordinate := Map()
         static holder := Gui()
+        static main_holder := Gui()
         static current_slot := 'Slot 1'
 
         static reset() {
-            for key, val in this.Coordinate {
-                if val is Gui.Control {
-                    val.Destroy()
+            for slot, items in this.Coordinate {
+                if items is Map {
+                    for u, unit_text in items {
+                        if unit_text is Gui.Control {
+                            unit_text.Value := ''
+                        }
+
+                    }
                 }
             }
-            this.Coordinate := Map()
         }
 
 
-        static draw(unit, slot, position) {
-            if position.x and position.y {
+        static draw(unit, slot, position, ctrl?) {
+            if position.x and position.y and position.x > 0 and position.x < 800 and position.y < 600 {
                 u := StrReplace(unit, '_', ' ')
                 s := StrReplace(slot, '_', ' ')
                 if !this.Coordinate.Has(s) {
                     this.Coordinate[s] := Map()
                 }
                 if !this.Coordinate[s].Has(u) {
-                    this.Coordinate[s][u] := UI.add_text(this.holder, s ' ' u)
+                    this.Coordinate[s][u] := UI.add_text(this.holder, s ' ' u, '+BackgroundTrans')
                 }
-                this.Coordinate[s][u].Move(position.x, position.y)
+                ctrlObj := this.Coordinate[s][u]
+
+                ctrlObj.Text := s ' ' u
+
+                ; Force resize
+                ctrlObj.GetPos(, , &w, &h)
+                ctrlObj.Move(position.x, position.y, w, h)
+
+
                 if this.current_slot = s {
                     this.Coordinate[s][u].SetFont('c1eaf19')
                 } else {
                     this.Coordinate[s][u].SetFont('c1270db')
                 }
+                if (IsSet(ctrl) and ctrl is Gui.Control) {
+                    ctrl.Text := u '`n(' position.x ' , ' position.y ')'
+                }
             }
+        }
+
+        static click_unit_draw(unit, ctrl_slot, ctrl) {
+            this.main_holder.Show()
+            static ToolTipClick(*) {
+                MouseGetPos(&mouse_x, &mouse_y,)
+                Coordinate.MapDrawing.holder.GetPos(&map_x, &map_y)
+
+                x := mouse_x - map_x
+                y := mouse_y - map_y
+                ToolTip(x ', ' y, mouse_x + 10, mouse_y + 10)
+                return { x: x, y: y }
+            }
+
+            SetTimer(ToolTipClick, 1)
+            KeyWait("LButton", "D")
+            a := ToolTipClick()
+            SetTimer(ToolTipClick, 0)
+            ToolTip('')
+            Coordinate.MapDrawing.draw(unit, ctrl_slot.Text, a, ctrl)
         }
 
         static change_coordinate_slot(slot) {
@@ -62,12 +107,20 @@ class Coordinate {
                     text.SetFont('c1270db')
                 }
             }
+            this.current_slot := slot
             if this.Coordinate.Has(slot) {
+                ctrls := Map()
                 for unit, text in this.Coordinate[slot] {
                     text.SetFont('c1eaf19')
+                    text.GetPos(&x, &y)
+                    ctrls[unit] := { x: x, y: y }
                 }
+                return ctrls
+            } else {
+                return Map()
             }
-            this.current_slot := slot
+
+
         }
     }
 }
