@@ -24,7 +24,7 @@ class Coordinate {
             for unit, ctrl in items {
                 ctrl.GetPos(&x, &y, &w, &h)
                 if x > 0 and x < 800 and y > 0 and y < 600 {
-                    data[slot][unit] := Map('x', x - w // 2, 'y', y - y // 2 - 7)
+                    data[slot][unit] := Map('x', x + w // 2, 'y', y + y // 2 + 7)
                 }
             }
         }
