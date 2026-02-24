@@ -22,7 +22,7 @@ try {
 
     coordinate_map_ddl := UI.add_ddl(coordinate_ddl_holder, ['Test'], 'map')
     coordinate_map_title := UI.add_text(coordinate_ddl_holder, 'Map:', '+Right')
-    coordinate_gamemode_ddl := UI.add_ddl(coordinate_ddl_holder, , 'game_mode')
+    coordinate_gamemode_ddl := UI.add_ddl(coordinate_ddl_holder, ['default', 'test'], 'game_mode')
     coordinate_gamemode_title := UI.add_text(coordinate_ddl_holder, 'Gamemode:', '+Right')
 
 
@@ -33,10 +33,12 @@ try {
     coordinate_reset_everything_button := UI.add_button(coordinate_ddl_holder, 'Reset everything')
 
     coordinate_maximum_buttons := Integer(Floor(Sqrt(Team.number_of_placement)))
-    coordinate_next_slot_button := UI.add_text(coordinate_unit_holder, '>')
+    coordinate_next_slot_button := UI.add_button(coordinate_unit_holder, '>')
     coordinate_next_slot_button.SetFont('s14')
-    coordinate_prev_slot_button := UI.add_text(coordinate_unit_holder, '<', '+Right')
+    coordinate_next_slot_button.OnEvent('Click', NextCoordinateSlot)
+    coordinate_prev_slot_button := UI.add_button(coordinate_unit_holder, '<')
     coordinate_prev_slot_button.SetFont('s14')
+    coordinate_prev_slot_button.OnEvent('Click', PrevCoordinateSlot)
     coordinate_slot_title_text := UI.add_text(coordinate_unit_holder, 'Slot 1', '+Center')
     coordinate_slot_title_text.SetFont('s14')
     coordinate_unit_bottom_array := [[coordinate_prev_slot_button, coordinate_slot_title_text, coordinate_next_slot_button], []]
@@ -68,6 +70,7 @@ try {
     Logging.critical('Fail to create coordinate ui', 'Coordinate UI', e)
 }
 
+Coordinate.MapDrawing.holder := coordinate_map_holder
 
 OpenCoordinateGUI(*) {
     Logging.trace('User open Coordinate ui', 'User')
@@ -78,6 +81,58 @@ OpenCoordinateGUI(*) {
 
 FillCoordinateGUI(*) {
     ChangeMapPicture()
+    DrawAllCoordinate()
+}
+
+RefreshCoordinateButton(*) {
+    Coordinate.MapDrawing.reset()
+    Loop Team.number_of_placement {
+        coordinate_unit_holder['Unit_' A_Index].Text := 'Unit ' A_Index '`n(' 0 ' , ' 0 ')'
+    }
+}
+
+NextCoordinateSlot(*) {
+    current_slot := Integer(StrSplit(coordinate_slot_title_text.Text, 'Slot ')[2])
+    if current_slot + 1 <= Team.number_of_slot {
+        coordinate_slot_title_text.Text := 'Slot ' current_slot + 1
+        Coordinate.MapDrawing.change_coordinate_slot('Slot ' current_slot + 1)
+    }
+}
+
+PrevCoordinateSlot(*) {
+    current_slot := Integer(StrSplit(coordinate_slot_title_text.Text, 'Slot ')[2])
+    if current_slot - 1 > 0 {
+        coordinate_slot_title_text.Text := 'Slot ' current_slot - 1
+        Coordinate.MapDrawing.change_coordinate_slot('Slot ' current_slot - 1)
+    }
+}
+
+DrawAllCoordinate(*) {
+    RefreshCoordinateButton()
+    data := Coordinate.get(coordinate_map_ddl.Text, coordinate_gamemode_ddl.Text)
+    Coordinate.MapDrawing.current_slot := coordinate_slot_title_text.Text
+    Loop Team.number_of_slot {
+        if data.Has('Slot ' A_Index) {
+            slot := 'Slot ' A_Index
+            Loop Team.number_of_placement {
+                if data[slot].Has('Unit ' A_Index) {
+                    unit := 'Unit ' A_Index
+                    x := 0
+                    y := 0
+                    if data[slot][unit] is Map {
+                        try x := Integer(data[slot][unit]['x'])
+                        try y := Integer(data[slot][unit]['y'])
+                    }
+                    Coordinate.MapDrawing.draw(
+                        unit, slot, {
+                            x: x, y: y
+                        }
+                    )
+                    coordinate_unit_holder['Unit_' A_Index].Text := 'Unit ' A_Index '`n(' x ' , ' y ')'
+                }
+            }
+        }
+    }
 }
 
 ChangeMapPicture(*) {

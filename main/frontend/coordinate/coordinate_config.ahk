@@ -22,6 +22,7 @@ class Coordinate {
     }
 
     class MapDrawing {
+        ; COORDINATE := Map( 'Slot 1', Map('Unit 1' , Gui.Control : Text) )
         static Coordinate := Map()
         static holder := Gui()
         static current_slot := 'Slot 1'
@@ -35,20 +36,38 @@ class Coordinate {
             this.Coordinate := Map()
         }
 
+
         static draw(unit, slot, position) {
-            if !this.Coordinate.Has(slot) {
-                this.Coordinate[slot] := Map()
-            }
-            if !this.Coordinate[slot].Has(unit) {
-                this.Coordinate[slot][unit] := UI.add_text(this.holder, slot ' ' unit)
-            }
-            this.Coordinate[slot][unit].Move(position.x, position.y)
-            if this.current_slot != slot {
-                this.Coordinate[slot][unit].Opt := 'c1eaf19'
-            } else {
-                this.Coordinate[slot][unit].Opt := 'c1270db'
+            if position.x and position.y {
+                u := StrReplace(unit, '_', ' ')
+                s := StrReplace(slot, '_', ' ')
+                if !this.Coordinate.Has(s) {
+                    this.Coordinate[s] := Map()
+                }
+                if !this.Coordinate[s].Has(u) {
+                    this.Coordinate[s][u] := UI.add_text(this.holder, s ' ' u)
+                }
+                this.Coordinate[s][u].Move(position.x, position.y)
+                if this.current_slot = s {
+                    this.Coordinate[s][u].SetFont('c1eaf19')
+                } else {
+                    this.Coordinate[s][u].SetFont('c1270db')
+                }
             }
         }
 
+        static change_coordinate_slot(slot) {
+            if this.Coordinate.Has(this.current_slot) {
+                for unit, text in this.Coordinate[this.current_slot] {
+                    text.SetFont('c1270db')
+                }
+            }
+            if this.Coordinate.Has(slot) {
+                for unit, text in this.Coordinate[slot] {
+                    text.SetFont('c1eaf19')
+                }
+            }
+            this.current_slot := slot
+        }
     }
 }
