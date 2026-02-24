@@ -47,8 +47,9 @@ class Coordinate {
                     for u, unit_text in items {
                         if unit_text is Gui.Control {
                             unit_text.Value := ''
+                            unit_text.GetPos(, , &w, &h)
+                            unit_text.Move(0 - w // 2 - 20, 0 - h // 2 - 20, w, h)
                         }
-
                     }
                 }
             }

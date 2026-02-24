@@ -16,12 +16,10 @@ Logging.debug('Heartbeat launched', 'Start')
 
 
 Loop {
-    if WinExist('main ahk_class AutoHotkey') {
-
-    } else {
+    if !WinExist('main ahk_class AutoHotkey') {
         Logging.debug("main program is not running, closing all the background program", 'Closing')
         Program.close_all()
         ExitApp()
     }
-    Sleep 2000
+    Sleep 200
 }
