@@ -22,8 +22,10 @@ class Coordinate {
         for slot, items in coordinates {
             data[slot] := Map()
             for unit, ctrl in items {
-                ctrl.GetPos(&x, &y)
-                data[slot][unit] := Map('x', x, 'y', y)
+                ctrl.GetPos(&x, &y, &w, &h)
+                if x > 0 and x < 800 and y > 0 and y < 600 {
+                    data[slot][unit] := Map('x', x - w // 2, 'y', y - y // 2 - 7)
+                }
             }
         }
         file_name := StrReplace(game_mode '\' map_name, ' ', '_')
@@ -36,6 +38,8 @@ class Coordinate {
         static holder := Gui()
         static main_holder := Gui()
         static current_slot := 'Slot 1'
+        static unselected_slot_color := 'c1270db'
+        static selected_slot_color := 'c1eaf19'
 
         static reset() {
             for slot, items in this.Coordinate {
@@ -52,31 +56,52 @@ class Coordinate {
 
 
         static draw(unit, slot, position, ctrl?) {
+            u := StrReplace(unit, '_', ' ')
+            s := StrReplace(slot, '_', ' ')
             if position.x and position.y and position.x > 0 and position.x < 800 and position.y < 600 {
-                u := StrReplace(unit, '_', ' ')
-                s := StrReplace(slot, '_', ' ')
+
                 if !this.Coordinate.Has(s) {
                     this.Coordinate[s] := Map()
                 }
                 if !this.Coordinate[s].Has(u) {
-                    this.Coordinate[s][u] := UI.add_text(this.holder, s ' ' u, '+BackgroundTrans')
+                    this.Coordinate[s][u] := UI.add_text(this.holder, s ' ' u '`nX', '+BackgroundTrans +Center')
                 }
                 ctrlObj := this.Coordinate[s][u]
 
-                ctrlObj.Text := s ' ' u
+                ctrlObj.Text := s ' ' u '`nX'
 
                 ; Force resize
                 ctrlObj.GetPos(, , &w, &h)
-                ctrlObj.Move(position.x, position.y, w, h)
+                ctrlObj.Move(position.x - w // 2, position.y - h // 2 - 7, w, h)
 
 
                 if this.current_slot = s {
-                    this.Coordinate[s][u].SetFont('c1eaf19')
+                    this.Coordinate[s][u].SetFont(this.selected_slot_color)
                 } else {
-                    this.Coordinate[s][u].SetFont('c1270db')
+                    this.Coordinate[s][u].SetFont(this.unselected_slot_color)
                 }
                 if (IsSet(ctrl) and ctrl is Gui.Control) {
                     ctrl.Text := u '`n(' position.x ' , ' position.y ')'
+                }
+            } else if this.Coordinate.Has(s) and this.Coordinate[s].Has(u) {
+                position.x := -10
+                position.y := -10
+                ctrlObj := this.Coordinate[s][u]
+
+                ctrlObj.Text := s ' ' u '`nX'
+
+                ; Force resize
+                ctrlObj.GetPos(, , &w, &h)
+                ctrlObj.Move(position.x - w // 2, position.y - h // 2 - 7, w, h)
+
+
+                if this.current_slot = s {
+                    this.Coordinate[s][u].SetFont(this.selected_slot_color)
+                } else {
+                    this.Coordinate[s][u].SetFont(this.unselected_slot_color)
+                }
+                if (IsSet(ctrl) and ctrl is Gui.Control) {
+                    ctrl.Text := u '`n(' 0 ' , ' 0 ')'
                 }
             }
         }
@@ -104,23 +129,36 @@ class Coordinate {
         static change_coordinate_slot(slot) {
             if this.Coordinate.Has(this.current_slot) {
                 for unit, text in this.Coordinate[this.current_slot] {
-                    text.SetFont('c1270db')
+                    text.SetFont(this.unselected_slot_color)
                 }
             }
             this.current_slot := slot
             if this.Coordinate.Has(slot) {
                 ctrls := Map()
                 for unit, text in this.Coordinate[slot] {
-                    text.SetFont('c1eaf19')
-                    text.GetPos(&x, &y)
-                    ctrls[unit] := { x: x, y: y }
+                    text.SetFont(this.selected_slot_color)
+                    text.GetPos(&x, &y, &w, &h)
+                    x_response := (x - w // 2) <= 0 or (x - w // 2) > 800 ? 0 : x - w // 2
+                    y_response := (y - h // 2 - 7) <= 0 or y - h // 2 - 7 > 600 ? 0 : y - h // 2 - 7
+                    ctrls[unit] := { x: x_response, y: y_response }
                 }
                 return ctrls
             } else {
                 return Map()
             }
+        }
 
+        static reset_current_slot(buttons_holder) {
+            if this.Coordinate.Has(this.current_slot) {
+                for unit, text in this.Coordinate[this.current_slot] {
+                    buttons_holder[StrReplace(unit, ' ', '_')].Text := unit '`n(0 , 0)'
+                    text := this.Coordinate[this.current_slot][unit]
+                    text.Text := ''
+                    text.GetPos(, , &w, &h)
+                    text.Move(0 - w // 2 - 20, 0 - h // 2 - 20, w, h)
 
+                }
+            }
         }
     }
 }

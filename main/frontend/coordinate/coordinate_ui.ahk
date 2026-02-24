@@ -33,6 +33,7 @@ try {
     coordinate_change_image_button.OnEvent('Click', ScreenshotMap)
     coordinate_delete_config_file_button := UI.add_button(coordinate_ddl_holder, 'Delete config')
     coordinate_reset_current_slot_button := UI.add_button(coordinate_ddl_holder, 'Reset this')
+    coordinate_reset_current_slot_button.OnEvent('Click', (*) => Coordinate.MapDrawing.reset_current_slot(coordinate_unit_holder))
     coordinate_reset_everything_button := UI.add_button(coordinate_ddl_holder, 'Reset everything')
 
     coordinate_maximum_buttons := Integer(Floor(Sqrt(Team.number_of_placement)))
