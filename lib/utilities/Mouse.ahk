@@ -9,12 +9,12 @@ class Mouse {
     }
 
     static scroll_up(delay := 10) {
-        SendInput("{WheelDown Down}")
+        SendInput("{WheelUp Down}")
         sleep delay
     }
 
     static scroll_down(delay := 10) {
-        SendInput("{WheelUp Down}")
+        SendInput("{WheelDown Down}")
         sleep delay
     }
 
