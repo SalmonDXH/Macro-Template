@@ -4,9 +4,10 @@ class Screenshot {
     static path := A_ScriptDir '\data\screenshot'
 
     static screeshot_from_app(app, x_custom := 0, y_custom := 0, w_custom := 0, h_custom := 0, name?, path?) {
-        if app is String and WinExist(app) {
+        DetectHiddenWindows(true)
+        if WinExist(app) {
             WinGetPos(&x, &y, &w, &h, app)
-            return this.screenshot(x + x_custom, y + y_custom, (w_custom) ? w_custom : w, (h_custom) ? h_custom : h, name, path)
+            return this.screenshot(x + x_custom, y + y_custom, (w_custom) ? w_custom : w, (h_custom) ? h_custom : h, IsSet(name) ? name : unset, IsSet(path) ? path : unset)
         } else {
             return false
         }

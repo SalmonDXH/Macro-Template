@@ -53,12 +53,14 @@ Game_Config := {}
 #Include ..\lib\program\Program.ahk
 #Include ..\lib\utilities\__init__.ahk
 #Include ..\lib\findtext\CustomFindText.ahk
+#Include ..\lib\OCR\ocr.ahk
 
 
 Program.close_all()
 Program.run_all(['webhook', 'heartbeat'], Logging.path)
 
 FT.window := Roblox_Config.window
+OCR.window := Roblox_Config.window
 Logging.flag := true
 
 Logging.debug('Load supported library', 'Starting')

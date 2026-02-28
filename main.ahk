@@ -10,4 +10,8 @@ F1:: SetSize()
 F2:: unset
 F3:: Reload()
 
+F4:: {
+    SetSize()
+    MsgBox OCR.check_by_window(590, 330, 126, 35)
+}
 Esc:: ExitApp()
