@@ -10,7 +10,7 @@ class Coordinate {
 
     static get(map_name, game_mode := 'default') {
         file_name := StrReplace(game_mode '\' map_name, ' ', '_')
-        this.data.team := map_name
+        this.data.map_name := map_name
         this.data.game_mode := game_mode
         this.data.config := JsonFile(A_ScriptDir '\data\coordinate\' file_name '.json').read()
         return this.data.config
