@@ -20,13 +20,13 @@ try {
     UI.gui_move(coordinate_ddl_holder, 0, 0, Coordinate.w - 860, 260)
     UI.gui_move(coordinate_unit_holder, 0, 300, Coordinate.w - 860, 600 - 300)
 
-    coordinate_map_ddl := UI.add_ddl(coordinate_ddl_holder, ['Test'], 'map')
+    coordinate_gamemode_ddl := UI.add_ddl(coordinate_ddl_holder, Game.Mode.GetAll(), 'game_mode')
+    coordinate_gamemode_ddl.OnEvent('Change', CoordinateGameModeChanged)
+    coordinate_gamemode_title := UI.add_text(coordinate_ddl_holder, 'Gamemode:', '+Right')
+
+    coordinate_map_ddl := UI.add_ddl(coordinate_ddl_holder, Game.Mode.GetMapNameWithId(coordinate_gamemode_ddl.Value), 'map')
     coordinate_map_ddl.OnEvent('Change', FillCoordinateGUI)
     coordinate_map_title := UI.add_text(coordinate_ddl_holder, 'Map:', '+Right')
-
-    coordinate_gamemode_ddl := UI.add_ddl(coordinate_ddl_holder, ['default', 'test'], 'game_mode')
-    coordinate_gamemode_ddl.OnEvent('Change', FillCoordinateGUI)
-    coordinate_gamemode_title := UI.add_text(coordinate_ddl_holder, 'Gamemode:', '+Right')
 
 
     coordinate_change_image_button := UI.add_button(coordinate_ddl_holder, 'Change image')
@@ -87,6 +87,12 @@ OpenCoordinateGUI(*) {
     FillCoordinateGUI()
     UI.gui_simple(coordinate_gui, Coordinate.w, Coordinate.h)
     return coordinate_gui
+}
+
+CoordinateGameModeChanged(*) {
+    coordinate_map_ddl.Delete()
+    coordinate_map_ddl.Add(Game.Mode.GetMapNameWithId(coordinate_gamemode_ddl.Value))
+    try coordinate_map_ddl.Choose(1)
 }
 
 FillCoordinateGUI(*) {

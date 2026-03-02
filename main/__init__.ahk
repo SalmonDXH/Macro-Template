@@ -54,6 +54,7 @@ Game_Config := {}
 #Include ..\lib\utilities\__init__.ahk
 #Include ..\lib\findtext\CustomFindText.ahk
 #Include ..\lib\OCR\ocr.ahk
+#Include ..\lib\image\Image.ahk
 
 
 Program.close_all()
