@@ -115,6 +115,7 @@ try {
     coordinate_button.OnEvent('Click', (*) => open_home_ui(OpenCoordinateGUI))
     setting_button := UI.add_button(config_holder, 'Setting')
     stratergy_button := UI.add_button(config_holder, 'Stratergy')
+    stratergy_button.OnEvent('Click', (*) => open_home_ui(OpenStratergyGUI))
 
     UI.grid_layout(config_holder, [[team_button, mode_button], [coordinate_button, stratergy_button], [setting_button, '']], , , 10, 25)
 

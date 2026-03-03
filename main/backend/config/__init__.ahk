@@ -1,0 +1,1 @@
+#Include image.ahk

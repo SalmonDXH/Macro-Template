@@ -8,7 +8,8 @@ class FT {
         try {
             if WinExist(this.window) and image is String {
                 WinGetPos(&x, &y, , , this.window)
-                return FindText(, , x + x_begin, y + x_begin, x + x_end, y + y_end, tolerance, tolerance, image)
+                pos := (FindText(&x_found, &y_found, x + x_begin, y + x_begin, x + x_end, y + y_end, tolerance, tolerance, image)) ? { x: x_found, y: x_found } : false
+                return pos
             } else {
                 return false
             }

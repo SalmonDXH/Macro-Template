@@ -12,7 +12,8 @@ class Coordinate {
         file_name := StrReplace(game_mode '\' map_name, ' ', '_')
         this.data.map_name := map_name
         this.data.game_mode := game_mode
-        this.data.config := JsonFile(A_ScriptDir '\data\coordinate\' file_name '.json').read()
+        f := JsonFile(A_ScriptDir '\data\coordinate\' file_name '.json')
+        this.data.config := (f.check()) ? f.read() : Template.Coordinate.Get(map_name)
         return this.data.config
     }
 
