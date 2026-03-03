@@ -13,6 +13,7 @@ class OCR {
             try FileDelete(image_path)
             return o
         } catch Error as e {
+            MsgBox e.Message
             return false
         }
     }

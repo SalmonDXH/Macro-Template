@@ -66,72 +66,72 @@ Class FindTextClass
     help()
     {
         return "
-(
-;--------------------------------
-;  FindText - Capture screen image into text and then find it
-;  Version : 9.9  (2024-09-16)
-;--------------------------------
-;  returnArray:=FindText(
-;      &OutputX --> The name of the variable used to store the returned X coordinate
-;    , &OutputY --> The name of the variable used to store the returned Y coordinate
-;    , X1 --> the search scope's upper left corner X coordinates
-;    , Y1 --> the search scope's upper left corner Y coordinates
-;    , X2 --> the search scope's lower right corner X coordinates
-;    , Y2 --> the search scope's lower right corner Y coordinates
-;    , err1 --> Fault tolerance percentage of text       (0.1=10%)
-;    , err0 --> Fault tolerance percentage of background (0.1=10%)
-;      Setting err1<0 or err0<0 can enable the left and right dilation algorithm
-;      to ignore slight misalignment of text lines, the fault tolerance must be very small
-;    , Text --> can be a lot of text parsed into images, separated by '|'
-;    , ScreenShot --> if the value is 0, the last screenshot will be used
-;    , FindAll --> if the value is 0, Just find one result and return
-;    , JoinText --> if you want to combine find, it can be 1, or an array of words to find
-;    , offsetX --> Set the max text offset (X) for combination lookup
-;    , offsetY --> Set the max text offset (Y) for combination lookup
-;    , dir --> Nine directions for searching: up, down, left, right and center
-;    , zoomW --> Zoom percentage of image width  (1.0=100%)
-;    , zoomH --> Zoom percentage of image height (1.0=100%)
-;  )
-;
-;  The function returns an Array containing all lookup results,
-;  any result is a object with the following values:
-;  {1:X, 2:Y, 3:W, 4:H, x:X+W//2, y:Y+H//2, id:Comment}
-;  If no image is found, the function returns 0.
-;  All coordinates are relative to Screen, colors are in RGB format
-;  All 'RRGGBB' can use 'Black', 'White', 'Red', 'Green', 'Blue', 'Yellow'
-;  All 'DRDGDB' can use similarity '1.0'(100%), it's floating-point number
-;
-;  If the return variable is set to 'ok', ok[1] is the first result found.
-;  ok[1].1, ok[1].2 is the X, Y coordinate of the upper left corner of the found image,
-;  ok[1].3, ok[1].4 is the width, height of the found image,
-;  ok[1].x <==> ok[1].1+ok[1].3//2 ( is the Center X coordinate of the found image ),
-;  ok[1].y <==> ok[1].2+ok[1].4//2 ( is the Center Y coordinate of the found image ),
-;  ok[1].id is the comment text, which is included in the <> of its parameter.
-;
-;  If OutputX is equal to 'wait' or 'wait1'(appear), or 'wait0'(disappear)
-;  it means using a loop to wait for the image to appear or disappear.
-;  the OutputY is the wait time in seconds, time less than 0 means infinite waiting
-;  Timeout means failure, return 0, and return other values means success
-;  If you want to appear and the image is found, return the found array object
-;  If you want to disappear and the image cannot be found, return 1
-;  Example 1: FindText(&X:='wait', &Y:=3, 0,0,0,0,0,0,Text)   ; Wait 3 seconds for appear
-;  Example 2: FindText(&X:='wait0', &Y:=-1, 0,0,0,0,0,0,Text) ; Wait indefinitely for disappear
-;
-;  <FindMultiColor> or <FindColor> : FindColor is FindMultiColor with only one point
-;  Text:='|<>##DRDGDB $ 0/0/RRGGBB1-DRDGDB1/RRGGBB2, xn/yn/-RRGGBB3/RRGGBB4, ...'
-;  Color behind '##' (0xDRDGDB) is the default allowed variation for all colors
-;  Initial point (0,0) match 0xRRGGBB1(+/-0xDRDGDB1) or 0xRRGGBB2(+/-0xDRDGDB),
-;  point (xn,yn) match not 0xRRGGBB3(+/-0xDRDGDB) and not 0xRRGGBB4(+/-0xDRDGDB)
-;  Starting with '-' after a point coordinate means excluding all subsequent colors
-;  Each point can take up to 10 sets of colors (xn/yn/RRGGBB1/.../RRGGBB10)
-;
-;  <FindPic> : Text parameter require manual input
-;  Text:='|<>##DRDGDB/RRGGBB1-DRDGDB1/RRGGBB2... $ d:\a.bmp'
-;  Color behind '##' (0xDRDGDB) is the default allowed variation for all colors
-;  the 0xRRGGBB1(+/-0xDRDGDB1) and 0xRRGGBB2(+/-0xDRDGDB) both transparent colors
-;
-;--------------------------------
-)"
+        (
+            ;--------------------------------
+            ;  FindText - Capture screen image into text and then find it
+            ;  Version : 9.9  (2024-09-16)
+            ;--------------------------------
+            ;  returnArray:=FindText(
+            ;      &OutputX --> The name of the variable used to store the returned X coordinate
+            ;    , &OutputY --> The name of the variable used to store the returned Y coordinate
+            ;    , X1 --> the search scope's upper left corner X coordinates
+            ;    , Y1 --> the search scope's upper left corner Y coordinates
+            ;    , X2 --> the search scope's lower right corner X coordinates
+            ;    , Y2 --> the search scope's lower right corner Y coordinates
+            ;    , err1 --> Fault tolerance percentage of text       (0.1=10%)
+            ;    , err0 --> Fault tolerance percentage of background (0.1=10%)
+            ;      Setting err1<0 or err0<0 can enable the left and right dilation algorithm
+            ;      to ignore slight misalignment of text lines, the fault tolerance must be very small
+            ;    , Text --> can be a lot of text parsed into images, separated by '|'
+            ;    , ScreenShot --> if the value is 0, the last screenshot will be used
+            ;    , FindAll --> if the value is 0, Just find one result and return
+            ;    , JoinText --> if you want to combine find, it can be 1, or an array of words to find
+            ;    , offsetX --> Set the max text offset (X) for combination lookup
+            ;    , offsetY --> Set the max text offset (Y) for combination lookup
+            ;    , dir --> Nine directions for searching: up, down, left, right and center
+            ;    , zoomW --> Zoom percentage of image width  (1.0=100%)
+            ;    , zoomH --> Zoom percentage of image height (1.0=100%)
+            ;  )
+            ;
+            ;  The function returns an Array containing all lookup results,
+            ;  any result is a object with the following values:
+            ;  {1:X, 2:Y, 3:W, 4:H, x:X+W//2, y:Y+H//2, id:Comment}
+            ;  If no image is found, the function returns 0.
+            ;  All coordinates are relative to Screen, colors are in RGB format
+            ;  All 'RRGGBB' can use 'Black', 'White', 'Red', 'Green', 'Blue', 'Yellow'
+            ;  All 'DRDGDB' can use similarity '1.0'(100%), it's floating-point number
+            ;
+            ;  If the return variable is set to 'ok', ok[1] is the first result found.
+            ;  ok[1].1, ok[1].2 is the X, Y coordinate of the upper left corner of the found image,
+            ;  ok[1].3, ok[1].4 is the width, height of the found image,
+            ;  ok[1].x <==> ok[1].1+ok[1].3//2 ( is the Center X coordinate of the found image ),
+            ;  ok[1].y <==> ok[1].2+ok[1].4//2 ( is the Center Y coordinate of the found image ),
+            ;  ok[1].id is the comment text, which is included in the <> of its parameter.
+            ;
+            ;  If OutputX is equal to 'wait' or 'wait1'(appear), or 'wait0'(disappear)
+            ;  it means using a loop to wait for the image to appear or disappear.
+            ;  the OutputY is the wait time in seconds, time less than 0 means infinite waiting
+            ;  Timeout means failure, return 0, and return other values means success
+            ;  If you want to appear and the image is found, return the found array object
+            ;  If you want to disappear and the image cannot be found, return 1
+            ;  Example 1: FindText(&X:='wait', &Y:=3, 0,0,0,0,0,0,Text)   ; Wait 3 seconds for appear
+            ;  Example 2: FindText(&X:='wait0', &Y:=-1, 0,0,0,0,0,0,Text) ; Wait indefinitely for disappear
+            ;
+            ;  <FindMultiColor> or <FindColor> : FindColor is FindMultiColor with only one point
+            ;  Text:='|<>##DRDGDB $ 0/0/RRGGBB1-DRDGDB1/RRGGBB2, xn/yn/-RRGGBB3/RRGGBB4, ...'
+            ;  Color behind '##' (0xDRDGDB) is the default allowed variation for all colors
+            ;  Initial point (0,0) match 0xRRGGBB1(+/-0xDRDGDB1) or 0xRRGGBB2(+/-0xDRDGDB),
+            ;  point (xn,yn) match not 0xRRGGBB3(+/-0xDRDGDB) and not 0xRRGGBB4(+/-0xDRDGDB)
+            ;  Starting with '-' after a point coordinate means excluding all subsequent colors
+            ;  Each point can take up to 10 sets of colors (xn/yn/RRGGBB1/.../RRGGBB10)
+            ;
+            ;  <FindPic> : Text parameter require manual input
+            ;  Text:='|<>##DRDGDB/RRGGBB1-DRDGDB1/RRGGBB2... $ d:\a.bmp'
+            ;  Color behind '##' (0xDRDGDB) is the default allowed variation for all colors
+            ;  the 0xRRGGBB1(+/-0xDRDGDB1) and 0xRRGGBB2(+/-0xDRDGDB) both transparent colors
+            ;
+            ;--------------------------------
+        )"
     }
 
     FindText(&OutputX := "", &OutputY := ""
@@ -515,323 +515,323 @@ Class FindTextClass
     code()
     {
         return "
-(
-
-//***** C source code of machine code *****
-
-int __attribute__((__stdcall__)) PicFind(
-  int mode, unsigned int c, unsigned int n, int dir
-  , unsigned char * Bmp, int Stride
-  , int sx, int sy, int sw, int sh
-  , unsigned char * ss, unsigned int * s1, unsigned int * s0
-  , unsigned char * text, int w, int h
-  , int err1, int err0, int more_err
-  , unsigned int * allpos, int allpos_max
-  , int new_w, int new_h )
-{
-  int ok, o, i, j, k, v, e1, e0, len1, len0, max, pic, shape;
-  int x, y, x1, y1, x2, y2, x3, y3;
-  int r, g, b, rr, gg, bb, dR, dG, dB;
-  int ii, jj, RunDir, DirCount, RunCount, AllCount1, AllCount2;
-  unsigned int c1, c2;
-  unsigned char * ts, * gs;
-  unsigned int * cors;
-  ok=0; o=0; len1=0; len0=0; ts=ss+sw; gs=ss+sw*3;
-  //----------------------
-  if (mode==5)
-  {
-    if (pic=(c==2))  // FindPic
-    {
-      cors=(unsigned int *)(text+w*h*4); n*=2;
-      for (y=0; y<h; y++)
-      {
-        for (x=0; x<w; x++, o+=4)
-        {
-          rr=text[2+o]; gg=text[1+o]; bb=text[o];
-          for (i=2; i<n;)
-          {
-            c1=cors[i++]; c2=cors[i++];
-            r=((c1>>16)&0xFF)-rr; g=((c1>>8)&0xFF)-gg; b=(c1&0xFF)-bb;
-            if (c2<0x1000000)
+        (
+            
+            //***** C source code of machine code *****
+            
+            int __attribute__((__stdcall__)) PicFind(
+              int mode, unsigned int c, unsigned int n, int dir
+              , unsigned char * Bmp, int Stride
+              , int sx, int sy, int sw, int sh
+              , unsigned char * ss, unsigned int * s1, unsigned int * s0
+              , unsigned char * text, int w, int h
+              , int err1, int err0, int more_err
+              , unsigned int * allpos, int allpos_max
+              , int new_w, int new_h )
             {
-              if (3*r*r+4*g*g+2*b*b<=c2) goto NoMatch1;
+              int ok, o, i, j, k, v, e1, e0, len1, len0, max, pic, shape;
+              int x, y, x1, y1, x2, y2, x3, y3;
+              int r, g, b, rr, gg, bb, dR, dG, dB;
+              int ii, jj, RunDir, DirCount, RunCount, AllCount1, AllCount2;
+              unsigned int c1, c2;
+              unsigned char * ts, * gs;
+              unsigned int * cors;
+              ok=0; o=0; len1=0; len0=0; ts=ss+sw; gs=ss+sw*3;
+              //----------------------
+              if (mode==5)
+              {
+                if (pic=(c==2))  // FindPic
+                {
+                  cors=(unsigned int *)(text+w*h*4); n*=2;
+                  for (y=0; y<h; y++)
+                  {
+                    for (x=0; x<w; x++, o+=4)
+                    {
+                      rr=text[2+o]; gg=text[1+o]; bb=text[o];
+                      for (i=2; i<n;)
+                      {
+                        c1=cors[i++]; c2=cors[i++];
+                        r=((c1>>16)&0xFF)-rr; g=((c1>>8)&0xFF)-gg; b=(c1&0xFF)-bb;
+                        if (c2<0x1000000)
+                        {
+                          if (3*r*r+4*g*g+2*b*b<=c2) goto NoMatch1;
+                        }
+                        else
+                        {
+                          if (r*r<=((c2>>16)&0xFF)*((c2>>16)&0xFF)
+                          && g*g<=((c2>>8)&0xFF)*((c2>>8)&0xFF)
+                          && b*b<=(c2&0xFF)*(c2&0xFF)) goto NoMatch1;
+                        }
+                      }
+                      s1[len1]=(y*new_h/h)*Stride+(x*new_w/w)*4;
+                      s0[len1++]=rr<<16|gg<<8|bb;
+                      NoMatch1:;
+                    }
+                  }
+                  c2=cors[1]; r=(c2>>16)&0xFF; g=(c2>>8)&0xFF; b=c2&0xFF; dR=r*r; dG=g*g; dB=b*b;
+                }
+                else  // FindMultiColor or FindColor
+                {
+                  shape=(c==1);  // FindShape
+                  cors=(unsigned int *)text;
+                  for (i=0; i<n; i++, o+=22)
+                  {
+                    c=cors[o]; c=((c>>16)*new_h/h)*Stride+((c&0xFFFF)*new_w/w)*4;
+                    if (!shape) { s1[len1]=c; s0[len1++]=o+cors[o+1]*2; continue; }
+                    if (cors[o+2])
+                      s1[len1++]=c;
+                    else
+                      s0[len0++]=c;
+                  }
+                  if (shape) { mode=4; c=s1[0]; n=cors[3]; }
+                  cors+=2;
+                }
+                goto StartLookUp;
+              }
+              //----------------------
+              // Generate Lookup Table
+              for (y=0; y<h; y++)
+              {
+                for (x=0; x<w; x++)
+                {
+                  i=(mode==4) ? (y*new_h/h)*Stride+(x*new_w/w)*4 : (y*new_h/h)*sw+(x*new_w/w);
+                  if (text[o++]=='1')
+                    s1[len1++]=i;
+                  else
+                    s0[len0++]=i;
+                }
+              }
+              //----------------------
+              // Color Position Mode
+              // only used to recognize multicolored Verification Code
+              if (mode==4)
+              {
+                c=((c>>16)*new_h/h)*Stride+((c&0xFFFF)*new_w/w)*4;
+                goto StartLookUp;
+              }
+              //----------------------
+              // Generate Two Value Image
+              o=sy*Stride+sx*4; j=Stride-sw*4; i=0;
+              if (mode==1)  // Color Mode
+              {
+                cors=(unsigned int *)(text+w*h); n*=2;
+                for (y=0; y<sh; y++, o+=j)
+                {
+                  for (x=0; x<sw; x++, o+=4, i++)
+                  {
+                    rr=Bmp[2+o]; gg=Bmp[1+o]; bb=Bmp[o];
+                    for (k=0; k<n;)
+                    {
+                      c1=cors[k++]; c2=cors[k++];
+                      r=((c1>>16)&0xFF)-rr; g=((c1>>8)&0xFF)-gg; b=(c1&0xFF)-bb;
+                      if (c2<0x1000000)
+                      {
+                        if (3*r*r+4*g*g+2*b*b<=c2) goto MatchOK1;
+                      }
+                      else
+                      {
+                        if (r*r<=((c2>>16)&0xFF)*((c2>>16)&0xFF)
+                        && g*g<=((c2>>8)&0xFF)*((c2>>8)&0xFF)
+                        && b*b<=(c2&0xFF)*(c2&0xFF)) goto MatchOK1;
+                      }
+                    }
+                    ts[i]=0;
+                    continue;
+                    MatchOK1:
+                    ts[i]=1;
+                  }
+                }
+              }
+              else if (mode==2)  // Gray Threshold Mode
+              {
+                c=(c+1)<<7;
+                for (y=0; y<sh; y++, o+=j)
+                  for (x=0; x<sw; x++, o+=4, i++)
+                    ts[i]=(Bmp[2+o]*38+Bmp[1+o]*75+Bmp[o]*15<c) ? 1:0;
+              }
+              else if (mode==3)  // Gray Difference Mode
+              {
+                for (y=0; y<sh; y++, o+=j)
+                {
+                  for (x=0; x<sw; x++, o+=4, i++)
+                    gs[i]=(Bmp[2+o]*38+Bmp[1+o]*75+Bmp[o]*15)>>7;
+                }
+                for (i=0, y=0; y<sh; y++)
+                {
+                  for (x=0; x<sw; x++, i++)
+                  {
+                    if (x==0 || x==sw-1 || y==0 || y==sh-1)
+                      ts[i]=2;
+                    else
+                    {
+                      n=gs[i]+c;
+                      ts[i]=(gs[i-1]>n || gs[i+1]>n
+                      || gs[i-sw]>n   || gs[i+sw]>n
+                      || gs[i-sw-1]>n || gs[i-sw+1]>n
+                      || gs[i+sw-1]>n || gs[i+sw+1]>n) ? 1:0;
+                    }
+                  }
+                }
+              }
+              //----------------------
+              StartLookUp:
+              for (i=0, y=0; y<sh; y++)
+              {
+                for (x=0; x<sw; x++, i++)
+                {
+                  if (mode>=4) { ss[i]=4; continue; }
+                  r=ts[i]; g=(x==0 ? 3:ts[i-1]); b=(x==sw-1 ? 3:ts[i+1]);
+                  if (more_err)
+                    ss[i]=4|(r==2||r==1||g==1||b==1)<<1|(r==2||r==0||g==0||b==0);
+                  else
+                    ss[i]=4|(r==2||r==1)<<1|(r==2||r==0);
+                }
+              }
+              if (mode<4 && more_err) sx++;
+              err1=(len1*err1)>>10;
+              err0=(len0*err0)>>10;
+              if (err1>=len1) len1=0;
+              if (err0>=len0) len0=0;
+              max=(len1>len0) ? len1 : len0;
+              w=new_w; h=new_h;
+              x1=0; y1=0; x2=sw-w; y2=sh-h;
+              // 1 ==> ( Left to Right ) Top to Bottom
+              // 2 ==> ( Right to Left ) Top to Bottom
+              // 3 ==> ( Left to Right ) Bottom to Top
+              // 4 ==> ( Right to Left ) Bottom to Top
+              // 5 ==> ( Top to Bottom ) Left to Right
+              // 6 ==> ( Bottom to Top ) Left to Right
+              // 7 ==> ( Top to Bottom ) Right to Left
+              // 8 ==> ( Bottom to Top ) Right to Left
+              // 9 ==> Center to Four Sides
+              if (dir==9)
+              {
+                x=(x1+x2)/2; y=(y1+y2)/2; i=x2-x1+1; j=y2-y1+1;
+                AllCount1=i*j; i=(i>j?i:j)+8;
+                AllCount2=i*i; RunCount=0; DirCount=1; RunDir=0;
+                for (ii=0; RunCount<AllCount1 && ii<AllCount2;)
+                {
+                  for(jj=0; jj<DirCount; jj++, ii++)
+                  {
+                    if(x>=x1 && x<=x2 && y>=y1 && y<=y2)
+                    {
+                      RunCount++;
+                      goto FindPos;
+                      FindPos_GoBak:;
+                    }
+                    if (RunDir==0) y--;
+                    else if (RunDir==1) x++;
+                    else if (RunDir==2) y++;
+                    else x--;
+                  }
+                  if (RunDir & 1) DirCount++;
+                  RunDir = (++RunDir) & 3;
+                }
+                goto Return1;
+              }
+              if (dir<1 || dir>8) dir=1;
+              if (--dir>3) { r=y1; y1=x1; x1=r; r=y2; y2=x2; x2=r; }
+              for (y3=y1; y3<=y2; y3++)
+              {
+                for (x3=x1; x3<=x2; x3++)
+                {
+                  y=(dir & 2) ? y1+y2-y3 : y3;
+                  x=(dir & 1) ? x1+x2-x3 : x3;
+                  if (dir>3) { r=y; y=x; x=r; }
+                  //----------------------
+                  FindPos:
+                  e1=err1; e0=err0; o=y*sw+x;
+                  if (ss[o]<4) goto NoMatch;
+                  if (mode<4)
+                  {
+                    for (i=0; i<max; i++)
+                    {
+                      if (i<len1 && (ss[o+s1[i]]&2)==0 && (--e1)<0) goto NoMatch;
+                      if (i<len0 && (ss[o+s0[i]]&1)==0 && (--e0)<0) goto NoMatch;
+                    }
+                  }
+                  else if (mode==5)
+                  {
+                    o=(sy+y)*Stride+(sx+x)*4;
+                    if (pic)
+                    {
+                      for (i=0; i<max; i++)
+                      {
+                        j=o+s1[i]; c=s0[i]; r=Bmp[2+j]-((c>>16)&0xFF);
+                        g=Bmp[1+j]-((c>>8)&0xFF); b=Bmp[j]-(c&0xFF);
+                        if (c2<0x1000000)
+                          v=3*r*r+4*g*g+2*b*b>c2;
+                        else
+                          v=r*r>dR || g*g>dG || b*b>dB;
+                        if (v && (--e1)<0) goto NoMatch;
+                      }
+                    }
+                    else
+                    {
+                      for (i=0; i<max; i++)
+                      {
+                        j=o+s1[i]; rr=Bmp[2+j]; gg=Bmp[1+j]; bb=Bmp[j];
+                        for (j=i*22, k=cors[j]>0xFFFFFF, n=s0[i]; j<n;)
+                        {
+                          c1=cors[j++]; c2=cors[j++];
+                          r=((c1>>16)&0xFF)-rr; g=((c1>>8)&0xFF)-gg; b=(c1&0xFF)-bb;
+                          if (c2<0x1000000)
+                            v=3*r*r+4*g*g+2*b*b<=c2;
+                          else
+                            v=r*r<=((c2>>16)&0xFF)*((c2>>16)&0xFF)
+                            && g*g<=((c2>>8)&0xFF)*((c2>>8)&0xFF)
+                            && b*b<=(c2&0xFF)*(c2&0xFF);
+                          if (v) { if (k) goto NoMatch2; goto MatchOK; }
+                        }
+                        if (k) continue;
+                        NoMatch2:
+                        if ((--e1)<0) goto NoMatch;
+                        MatchOK:;
+                      }
+                    }
+                  }
+                  else  // mode==4
+                  {
+                    o=(sy+y)*Stride+(sx+x)*4;
+                    j=o+c; rr=Bmp[2+j]; gg=Bmp[1+j]; bb=Bmp[j];
+                    for (i=0; i<max; i++)
+                    {
+                      if (i<len1)
+                      {
+                        j=o+s1[i]; r=Bmp[2+j]-rr; g=Bmp[1+j]-gg; b=Bmp[j]-bb;
+                        if (3*r*r+4*g*g+2*b*b>n && (--e1)<0) goto NoMatch;
+                      }
+                      if (i<len0)
+                      {
+                        j=o+s0[i]; r=Bmp[2+j]-rr; g=Bmp[1+j]-gg; b=Bmp[j]-bb;
+                        if (3*r*r+4*g*g+2*b*b<=n && (--e0)<0) goto NoMatch;
+                      }
+                    }
+                  }
+                  ok++;
+                  if (allpos!=0)
+                  {
+                    allpos[ok-1]=(sy+y)<<16|(sx+x);
+                    if (ok>=allpos_max) goto Return1;
+                  }
+                  // Skip areas that may overlap
+                  r=y-h+1; if (r<0) r=0; rr=y+h-1; if (rr>sh-h) rr=sh-h;
+                  g=x-w+1; if (g<0) g=0; gg=x+w-1; if (gg>sw-w) gg=sw-w;
+                  for (i=r; i<=rr; i++)
+                  {
+                    for (j=g; j<=gg; j++)
+                      ss[i*sw+j] &= 3;
+                  }
+                  NoMatch:
+                  if (dir==9) goto FindPos_GoBak;
+                }
+              }
+              //----------------------
+              Return1:
+              return ok;
             }
-            else
-            {
-              if (r*r<=((c2>>16)&0xFF)*((c2>>16)&0xFF)
-              && g*g<=((c2>>8)&0xFF)*((c2>>8)&0xFF)
-              && b*b<=(c2&0xFF)*(c2&0xFF)) goto NoMatch1;
-            }
-          }
-          s1[len1]=(y*new_h/h)*Stride+(x*new_w/w)*4;
-          s0[len1++]=rr<<16|gg<<8|bb;
-          NoMatch1:;
-        }
-      }
-      c2=cors[1]; r=(c2>>16)&0xFF; g=(c2>>8)&0xFF; b=c2&0xFF; dR=r*r; dG=g*g; dB=b*b;
-    }
-    else  // FindMultiColor or FindColor
-    {
-      shape=(c==1);  // FindShape
-      cors=(unsigned int *)text;
-      for (i=0; i<n; i++, o+=22)
-      {
-        c=cors[o]; c=((c>>16)*new_h/h)*Stride+((c&0xFFFF)*new_w/w)*4;
-        if (!shape) { s1[len1]=c; s0[len1++]=o+cors[o+1]*2; continue; }
-        if (cors[o+2])
-          s1[len1++]=c;
-        else
-          s0[len0++]=c;
-      }
-      if (shape) { mode=4; c=s1[0]; n=cors[3]; }
-      cors+=2;
-    }
-    goto StartLookUp;
-  }
-  //----------------------
-  // Generate Lookup Table
-  for (y=0; y<h; y++)
-  {
-    for (x=0; x<w; x++)
-    {
-      i=(mode==4) ? (y*new_h/h)*Stride+(x*new_w/w)*4 : (y*new_h/h)*sw+(x*new_w/w);
-      if (text[o++]=='1')
-        s1[len1++]=i;
-      else
-        s0[len0++]=i;
-    }
-  }
-  //----------------------
-  // Color Position Mode
-  // only used to recognize multicolored Verification Code
-  if (mode==4)
-  {
-    c=((c>>16)*new_h/h)*Stride+((c&0xFFFF)*new_w/w)*4;
-    goto StartLookUp;
-  }
-  //----------------------
-  // Generate Two Value Image
-  o=sy*Stride+sx*4; j=Stride-sw*4; i=0;
-  if (mode==1)  // Color Mode
-  {
-    cors=(unsigned int *)(text+w*h); n*=2;
-    for (y=0; y<sh; y++, o+=j)
-    {
-      for (x=0; x<sw; x++, o+=4, i++)
-      {
-        rr=Bmp[2+o]; gg=Bmp[1+o]; bb=Bmp[o];
-        for (k=0; k<n;)
-        {
-          c1=cors[k++]; c2=cors[k++];
-          r=((c1>>16)&0xFF)-rr; g=((c1>>8)&0xFF)-gg; b=(c1&0xFF)-bb;
-          if (c2<0x1000000)
-          {
-            if (3*r*r+4*g*g+2*b*b<=c2) goto MatchOK1;
-          }
-          else
-          {
-            if (r*r<=((c2>>16)&0xFF)*((c2>>16)&0xFF)
-            && g*g<=((c2>>8)&0xFF)*((c2>>8)&0xFF)
-            && b*b<=(c2&0xFF)*(c2&0xFF)) goto MatchOK1;
-          }
-        }
-        ts[i]=0;
-        continue;
-        MatchOK1:
-        ts[i]=1;
-      }
-    }
-  }
-  else if (mode==2)  // Gray Threshold Mode
-  {
-    c=(c+1)<<7;
-    for (y=0; y<sh; y++, o+=j)
-      for (x=0; x<sw; x++, o+=4, i++)
-        ts[i]=(Bmp[2+o]*38+Bmp[1+o]*75+Bmp[o]*15<c) ? 1:0;
-  }
-  else if (mode==3)  // Gray Difference Mode
-  {
-    for (y=0; y<sh; y++, o+=j)
-    {
-      for (x=0; x<sw; x++, o+=4, i++)
-        gs[i]=(Bmp[2+o]*38+Bmp[1+o]*75+Bmp[o]*15)>>7;
-    }
-    for (i=0, y=0; y<sh; y++)
-    {
-      for (x=0; x<sw; x++, i++)
-      {
-        if (x==0 || x==sw-1 || y==0 || y==sh-1)
-          ts[i]=2;
-        else
-        {
-          n=gs[i]+c;
-          ts[i]=(gs[i-1]>n || gs[i+1]>n
-          || gs[i-sw]>n   || gs[i+sw]>n
-          || gs[i-sw-1]>n || gs[i-sw+1]>n
-          || gs[i+sw-1]>n || gs[i+sw+1]>n) ? 1:0;
-        }
-      }
-    }
-  }
-  //----------------------
-  StartLookUp:
-  for (i=0, y=0; y<sh; y++)
-  {
-    for (x=0; x<sw; x++, i++)
-    {
-      if (mode>=4) { ss[i]=4; continue; }
-      r=ts[i]; g=(x==0 ? 3:ts[i-1]); b=(x==sw-1 ? 3:ts[i+1]);
-      if (more_err)
-        ss[i]=4|(r==2||r==1||g==1||b==1)<<1|(r==2||r==0||g==0||b==0);
-      else
-        ss[i]=4|(r==2||r==1)<<1|(r==2||r==0);
-    }
-  }
-  if (mode<4 && more_err) sx++;
-  err1=(len1*err1)>>10;
-  err0=(len0*err0)>>10;
-  if (err1>=len1) len1=0;
-  if (err0>=len0) len0=0;
-  max=(len1>len0) ? len1 : len0;
-  w=new_w; h=new_h;
-  x1=0; y1=0; x2=sw-w; y2=sh-h;
-  // 1 ==> ( Left to Right ) Top to Bottom
-  // 2 ==> ( Right to Left ) Top to Bottom
-  // 3 ==> ( Left to Right ) Bottom to Top
-  // 4 ==> ( Right to Left ) Bottom to Top
-  // 5 ==> ( Top to Bottom ) Left to Right
-  // 6 ==> ( Bottom to Top ) Left to Right
-  // 7 ==> ( Top to Bottom ) Right to Left
-  // 8 ==> ( Bottom to Top ) Right to Left
-  // 9 ==> Center to Four Sides
-  if (dir==9)
-  {
-    x=(x1+x2)/2; y=(y1+y2)/2; i=x2-x1+1; j=y2-y1+1;
-    AllCount1=i*j; i=(i>j?i:j)+8;
-    AllCount2=i*i; RunCount=0; DirCount=1; RunDir=0;
-    for (ii=0; RunCount<AllCount1 && ii<AllCount2;)
-    {
-      for(jj=0; jj<DirCount; jj++, ii++)
-      {
-        if(x>=x1 && x<=x2 && y>=y1 && y<=y2)
-        {
-          RunCount++;
-          goto FindPos;
-          FindPos_GoBak:;
-        }
-        if (RunDir==0) y--;
-        else if (RunDir==1) x++;
-        else if (RunDir==2) y++;
-        else x--;
-      }
-      if (RunDir & 1) DirCount++;
-      RunDir = (++RunDir) & 3;
-    }
-    goto Return1;
-  }
-  if (dir<1 || dir>8) dir=1;
-  if (--dir>3) { r=y1; y1=x1; x1=r; r=y2; y2=x2; x2=r; }
-  for (y3=y1; y3<=y2; y3++)
-  {
-    for (x3=x1; x3<=x2; x3++)
-    {
-      y=(dir & 2) ? y1+y2-y3 : y3;
-      x=(dir & 1) ? x1+x2-x3 : x3;
-      if (dir>3) { r=y; y=x; x=r; }
-      //----------------------
-      FindPos:
-      e1=err1; e0=err0; o=y*sw+x;
-      if (ss[o]<4) goto NoMatch;
-      if (mode<4)
-      {
-        for (i=0; i<max; i++)
-        {
-          if (i<len1 && (ss[o+s1[i]]&2)==0 && (--e1)<0) goto NoMatch;
-          if (i<len0 && (ss[o+s0[i]]&1)==0 && (--e0)<0) goto NoMatch;
-        }
-      }
-      else if (mode==5)
-      {
-        o=(sy+y)*Stride+(sx+x)*4;
-        if (pic)
-        {
-          for (i=0; i<max; i++)
-          {
-            j=o+s1[i]; c=s0[i]; r=Bmp[2+j]-((c>>16)&0xFF);
-            g=Bmp[1+j]-((c>>8)&0xFF); b=Bmp[j]-(c&0xFF);
-            if (c2<0x1000000)
-              v=3*r*r+4*g*g+2*b*b>c2;
-            else
-              v=r*r>dR || g*g>dG || b*b>dB;
-            if (v && (--e1)<0) goto NoMatch;
-          }
-        }
-        else
-        {
-          for (i=0; i<max; i++)
-          {
-            j=o+s1[i]; rr=Bmp[2+j]; gg=Bmp[1+j]; bb=Bmp[j];
-            for (j=i*22, k=cors[j]>0xFFFFFF, n=s0[i]; j<n;)
-            {
-              c1=cors[j++]; c2=cors[j++];
-              r=((c1>>16)&0xFF)-rr; g=((c1>>8)&0xFF)-gg; b=(c1&0xFF)-bb;
-              if (c2<0x1000000)
-                v=3*r*r+4*g*g+2*b*b<=c2;
-              else
-                v=r*r<=((c2>>16)&0xFF)*((c2>>16)&0xFF)
-                && g*g<=((c2>>8)&0xFF)*((c2>>8)&0xFF)
-                && b*b<=(c2&0xFF)*(c2&0xFF);
-              if (v) { if (k) goto NoMatch2; goto MatchOK; }
-            }
-            if (k) continue;
-            NoMatch2:
-            if ((--e1)<0) goto NoMatch;
-            MatchOK:;
-          }
-        }
-      }
-      else  // mode==4
-      {
-        o=(sy+y)*Stride+(sx+x)*4;
-        j=o+c; rr=Bmp[2+j]; gg=Bmp[1+j]; bb=Bmp[j];
-        for (i=0; i<max; i++)
-        {
-          if (i<len1)
-          {
-            j=o+s1[i]; r=Bmp[2+j]-rr; g=Bmp[1+j]-gg; b=Bmp[j]-bb;
-            if (3*r*r+4*g*g+2*b*b>n && (--e1)<0) goto NoMatch;
-          }
-          if (i<len0)
-          {
-            j=o+s0[i]; r=Bmp[2+j]-rr; g=Bmp[1+j]-gg; b=Bmp[j]-bb;
-            if (3*r*r+4*g*g+2*b*b<=n && (--e0)<0) goto NoMatch;
-          }
-        }
-      }
-      ok++;
-      if (allpos!=0)
-      {
-        allpos[ok-1]=(sy+y)<<16|(sx+x);
-        if (ok>=allpos_max) goto Return1;
-      }
-      // Skip areas that may overlap
-      r=y-h+1; if (r<0) r=0; rr=y+h-1; if (rr>sh-h) rr=sh-h;
-      g=x-w+1; if (g<0) g=0; gg=x+w-1; if (gg>sw-w) gg=sw-w;
-      for (i=r; i<=rr; i++)
-      {
-        for (j=g; j<=gg; j++)
-          ss[i*sw+j] &= 3;
-      }
-      NoMatch:
-      if (dir==9) goto FindPos_GoBak;
-    }
-  }
-  //----------------------
-  Return1:
-  return ok;
-}
-
-)"
+            
+        )"
     }
 
     PicInfo(text)
@@ -3558,112 +3558,112 @@ int __attribute__((__stdcall__)) PicFind(
         if (!Lang1)
         {
             s := "
-    (
-Myww       = Width = Adjust the width of the capture range
-Myhh       = Height = Adjust the height of the capture range
-AddFunc    = Add = Additional FindText() in Copy
-NowHotkey  = Hotkey = Current screenshot hotkey
-SetHotkey1 = = First sequence Screenshot hotkey
-SetHotkey2 = = Second sequence Screenshot hotkey
-Apply      = Apply = Apply new screenshot hotkey
-CutU2      = CutU = Cut the Upper Edge of the text in the edit box below
-CutL2      = CutL = Cut the Left Edge of the text in the edit box below
-CutR2      = CutR = Cut the Right Edge of the text in the edit box below
-CutD2      = CutD = Cut the Lower Edge of the text in the edit box below
-Update     = Update = Update the text in the edit box below to the line of Code
-GetRange   = GetRange = Get screen range to Clipboard and update the search range of the Code
-GetOffset  = GetOffset = Get position offset relative to the Text from the Code and update FindText().Click()
-GetClipOffset  = GetOffset2 = Get position offset relative to the Text from the Left Box
-Capture    = Capture = Initiate Image Capture Sequence
-CaptureS   = CaptureS = Restore the Saved ScreenShot by Hotkey and then start capturing
-Test       = Test = Test the Text from the Code to see if it can be found on the screen
-TestClip   = Test2 = Test the Text from the Left Box and copy the result to Clipboard
-Paste      = Paste = Paste the Text from Clipboard to the Left Box
-CopyOffset = Copy2 = Copy the Offset to Clipboard
-Copy       = Copy = Copy the selected or all of the code to the clipboard
-Reset      = Reset = Reset to Original Captured Image
-SplitAdd   = SplitAdd = Using Markup Segmentation to Generate Text Library
-AllAdd     = AllAdd = Append Another FindText Search Text into Previously Generated Code
-Gray2Two      = Gray2Two = Converts Image Pixels from Gray Threshold to Black or White
-GrayDiff2Two  = GrayDiff2Two = Converts Image Pixels from Gray Difference to Black or White
-Color2Two     = Color2Two = Converts Image Pixels from Color List to Black or White
-ColorPos2Two  = ColorPos2Two = Converts Image Pixels from Color Position to Black or White
-SelGray    = Gray = Gray value of the selected color
-SelColor   = Color = The selected color
-SelR       = R = Red component of the selected color
-SelG       = G = Green component of the selected color
-SelB       = B = Blue component of the selected color
-RepU       = -U = Undo Cut the Upper Edge by 1
-CutU       = U = Cut the Upper Edge by 1
-CutU3      = U3 = Cut the Upper Edge by 3
-RepL       = -L = Undo Cut the Left Edge by 1
-CutL       = L = Cut the Left Edge by 1
-CutL3      = L3 = Cut the Left Edge by 3
-Auto       = Auto = Automatic Cut Edge after image has been converted to black and white
-RepR       = -R = Undo Cut the Right Edge by 1
-CutR       = R = Cut the Right Edge by 1
-CutR3      = R3 = Cut the Right Edge by 3
-RepD       = -D = Undo Cut the Lower Edge by 1
-CutD       = D = Cut the Lower Edge by 1
-CutD3      = D3 = Cut the Lower Edge by 3
-Modify     = Modify = Allows Modify the Black and White Image
-MultiColor = FindMultiColor = Click multiple colors with the mouse, then Click OK button
-FindShape  = FindShape = Click multiple colors, it will be binarized based on the first color
-Undo       = Undo = Undo the last selected color
-Undo2      = Undo = Undo the last added color in Color List
-Comment    = Comment = Optional Comment used to Label Code ( Within <> )
-Threshold  = Gray Threshold = Gray Threshold which Determines Black or White Pixel Conversion (0-255)
-GrayDiff   = Gray Difference = Gray Difference which Determines Black or White Pixel Conversion (0-255)
-Similar1   = Similarity = Adjust color similarity as Equivalent to The Selected Color
-Similar2   = Similarity = Adjust color similarity as Equivalent to The Selected Color
-Similar3   = Similarity = Adjust color similarity as Equivalent to The Selected Color
-AddColorSim  = Add = Add Color to Color List and Run Color2Two
-AddColorDiff = Add = Add Color to Color List and Run Color2Two
-ColorList  = = Color list for converting black and white images
-DiffRGB    = R/G/B = Determine the allowed R/G/B Error (0-255) when Find MultiColor
-DiffRGB2   = R/G/B = Determine the allowed R/G/B Error (0-255)
-Bind0      = BindWin1 = Bind the window and Use GetDCEx() to get the image of background window
-Bind1      = BindWin1+ = Bind the window Use GetDCEx() and Modify the window to support transparency
-Bind2      = BindWin2 = Bind the window and Use PrintWindow() to get the image of background window
-Bind3      = BindWin2+ = Bind the window Use PrintWindow() and Modify the window to support transparency
-Bind4      = BindWin3 = Bind the window and Use PrintWindow(,,3) to get the image of background window
-OK         = OK = Create New FindText Code for Testing
-OK2        = OK = Restore this ScreenShot then Capturing
-Cancel     = Cancel = Close the Window Don't Do Anything
-Cancel2    = Cancel = Close the Window Don't Do Anything
-ClearAll   = ClearAll = Clean up all saved ScreenShots
-OpenDir    = OpenDir = Open the saved screenshots directory
-SavePic    = SavePic = Select a range and save as a picture
-SavePic2   = SavePic = Save the trimmed original image as a picture
-LoadPic    = LoadPic = Load a picture as Capture image
-ClipText   = = Displays the Text data from clipboard
-Offset     = = Displays the results of GetOffset2 or GetRange
-SelectBox  = = Select a screenshot to display in the upper left corner of the screen
-s1  = FindText
-s2  = Gray|GrayDiff|Color|ColorPos|MultiColor
-s3  = Capture Image To Text
-s4  = Capture Image To Text and Find Text Tool
-s5  = Direction keys to fine tune\nFirst click RButton(or Ctrl)\nMove the mouse away\nSecond click RButton(or Ctrl)
-s6  = Unbind Window using
-s7  = Drag a range with LButton(or Ctrl)\nCoordinates are copied to clipboard
-s8  = Found|Time|ms|Pos|Result|value can be get from|Wait 3 seconds for appear|Wait indefinitely for disappear
-s9  = Success
-s10 = The Capture Position|Perspective binding window\nRight click to finish capture
-s11 = Please Set Gray Difference First !
-s12 = Please select the core color first !
-s13 = Please convert the image to black or white first !
-s14 = Can't be used in ColorPos mode, because it can cause position errors
-s15 = Are you sure about the scope of your choice ?\n\nIf not, you can choose again
-s16 = Please add colors to the color list first !
-s17 = The picture you want to open was not found !
-s18 = Capture|ScreenShot
-s19 = Are you sure to delete all screenshots ?
-    )"
-            Lang1 := Map(), Lang1.Default := "", Lang2 := Map(), Lang2.Default := ""
-            Loop Parse, s, "`n", "`r"
-                if InStr(v := A_LoopField, "=")
-                    r := StrSplit(StrReplace(v "==", "\n", "`n"), "=", "`t ")
-                        , Lang1[r[1]] := r[2], Lang2[r[1]] := r[3]
+            (
+                Myww       = Width = Adjust the width of the capture range
+                Myhh       = Height = Adjust the height of the capture range
+                AddFunc    = Add = Additional FindText() in Copy
+                NowHotkey  = Hotkey = Current screenshot hotkey
+                SetHotkey1 = = First sequence Screenshot hotkey
+                SetHotkey2 = = Second sequence Screenshot hotkey
+                Apply      = Apply = Apply new screenshot hotkey
+                CutU2      = CutU = Cut the Upper Edge of the text in the edit box below
+                CutL2      = CutL = Cut the Left Edge of the text in the edit box below
+                CutR2      = CutR = Cut the Right Edge of the text in the edit box below
+                CutD2      = CutD = Cut the Lower Edge of the text in the edit box below
+                Update     = Update = Update the text in the edit box below to the line of Code
+                GetRange   = GetRange = Get screen range to Clipboard and update the search range of the Code
+                GetOffset  = GetOffset = Get position offset relative to the Text from the Code and update FindText().Click()
+                GetClipOffset  = GetOffset2 = Get position offset relative to the Text from the Left Box
+                Capture    = Capture = Initiate Image Capture Sequence
+                CaptureS   = CaptureS = Restore the Saved ScreenShot by Hotkey and then start capturing
+                Test       = Test = Test the Text from the Code to see if it can be found on the screen
+                TestClip   = Test2 = Test the Text from the Left Box and copy the result to Clipboard
+                Paste      = Paste = Paste the Text from Clipboard to the Left Box
+                CopyOffset = Copy2 = Copy the Offset to Clipboard
+                Copy       = Copy = Copy the selected or all of the code to the clipboard
+                Reset      = Reset = Reset to Original Captured Image
+                SplitAdd   = SplitAdd = Using Markup Segmentation to Generate Text Library
+                AllAdd     = AllAdd = Append Another FindText Search Text into Previously Generated Code
+                Gray2Two      = Gray2Two = Converts Image Pixels from Gray Threshold to Black or White
+                GrayDiff2Two  = GrayDiff2Two = Converts Image Pixels from Gray Difference to Black or White
+                Color2Two     = Color2Two = Converts Image Pixels from Color List to Black or White
+                ColorPos2Two  = ColorPos2Two = Converts Image Pixels from Color Position to Black or White
+                SelGray    = Gray = Gray value of the selected color
+                SelColor   = Color = The selected color
+                SelR       = R = Red component of the selected color
+                SelG       = G = Green component of the selected color
+                SelB       = B = Blue component of the selected color
+                RepU       = -U = Undo Cut the Upper Edge by 1
+                CutU       = U = Cut the Upper Edge by 1
+                CutU3      = U3 = Cut the Upper Edge by 3
+                RepL       = -L = Undo Cut the Left Edge by 1
+                CutL       = L = Cut the Left Edge by 1
+                CutL3      = L3 = Cut the Left Edge by 3
+                Auto       = Auto = Automatic Cut Edge after image has been converted to black and white
+                RepR       = -R = Undo Cut the Right Edge by 1
+                CutR       = R = Cut the Right Edge by 1
+                CutR3      = R3 = Cut the Right Edge by 3
+                RepD       = -D = Undo Cut the Lower Edge by 1
+                CutD       = D = Cut the Lower Edge by 1
+                CutD3      = D3 = Cut the Lower Edge by 3
+                Modify     = Modify = Allows Modify the Black and White Image
+                MultiColor = FindMultiColor = Click multiple colors with the mouse, then Click OK button
+                FindShape  = FindShape = Click multiple colors, it will be binarized based on the first color
+                Undo       = Undo = Undo the last selected color
+                Undo2      = Undo = Undo the last added color in Color List
+                Comment    = Comment = Optional Comment used to Label Code ( Within <> )
+                Threshold  = Gray Threshold = Gray Threshold which Determines Black or White Pixel Conversion (0-255)
+                GrayDiff   = Gray Difference = Gray Difference which Determines Black or White Pixel Conversion (0-255)
+                Similar1   = Similarity = Adjust color similarity as Equivalent to The Selected Color
+                Similar2   = Similarity = Adjust color similarity as Equivalent to The Selected Color
+                Similar3   = Similarity = Adjust color similarity as Equivalent to The Selected Color
+                AddColorSim  = Add = Add Color to Color List and Run Color2Two
+                AddColorDiff = Add = Add Color to Color List and Run Color2Two
+                ColorList  = = Color list for converting black and white images
+                DiffRGB    = R/G/B = Determine the allowed R/G/B Error (0-255) when Find MultiColor
+                DiffRGB2   = R/G/B = Determine the allowed R/G/B Error (0-255)
+                Bind0      = BindWin1 = Bind the window and Use GetDCEx() to get the image of background window
+                Bind1      = BindWin1+ = Bind the window Use GetDCEx() and Modify the window to support transparency
+                Bind2      = BindWin2 = Bind the window and Use PrintWindow() to get the image of background window
+                Bind3      = BindWin2+ = Bind the window Use PrintWindow() and Modify the window to support transparency
+                Bind4      = BindWin3 = Bind the window and Use PrintWindow(,,3) to get the image of background window
+                OK         = OK = Create New FindText Code for Testing
+                OK2        = OK = Restore this ScreenShot then Capturing
+                Cancel     = Cancel = Close the Window Don't Do Anything
+                Cancel2    = Cancel = Close the Window Don't Do Anything
+                ClearAll   = ClearAll = Clean up all saved ScreenShots
+                OpenDir    = OpenDir = Open the saved screenshots directory
+                SavePic    = SavePic = Select a range and save as a picture
+                SavePic2   = SavePic = Save the trimmed original image as a picture
+                LoadPic    = LoadPic = Load a picture as Capture image
+                ClipText   = = Displays the Text data from clipboard
+                Offset     = = Displays the results of GetOffset2 or GetRange
+                SelectBox  = = Select a screenshot to display in the upper left corner of the screen
+                s1  = FindText
+                s2  = Gray|GrayDiff|Color|ColorPos|MultiColor
+                s3  = Capture Image To Text
+                s4  = Capture Image To Text and Find Text Tool
+                s5  = Direction keys to fine tune\nFirst click RButton(or Ctrl)\nMove the mouse away\nSecond click RButton(or Ctrl)
+                s6  = Unbind Window using
+                s7  = Drag a range with LButton(or Ctrl)\nCoordinates are copied to clipboard
+                s8  = Found|Time|ms|Pos|Result|value can be get from|Wait 3 seconds for appear|Wait indefinitely for disappear
+                s9  = Success
+                s10 = The Capture Position|Perspective binding window\nRight click to finish capture
+                s11 = Please Set Gray Difference First !
+                s12 = Please select the core color first !
+                s13 = Please convert the image to black or white first !
+                s14 = Can't be used in ColorPos mode, because it can cause position errors
+                s15 = Are you sure about the scope of your choice ?\n\nIf not, you can choose again
+                s16 = Please add colors to the color list first !
+                s17 = The picture you want to open was not found !
+                s18 = Capture|ScreenShot
+                s19 = Are you sure to delete all screenshots ?
+            )"
+    Lang1 := Map(), Lang1.Default := "", Lang2 := Map(), Lang2.Default := ""
+    Loop Parse, s, "`n", "`r"
+        if InStr(v := A_LoopField, "=")
+            r := StrSplit(StrReplace(v "==", "\n", "`n"), "=", "`t ")
+                , Lang1[r[1]] := r[2], Lang2[r[1]] := r[3]
         }
         return getLang = 1 ? Lang1 : getLang = 2 ? Lang2 : Lang1[text]
     }

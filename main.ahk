@@ -12,6 +12,12 @@ F3:: Reload()
 
 F4:: {
     SetSize()
-    MsgBox OCR.check_by_window(590, 330, 126, 35)
+    for id, i in Image.GetService(1) {
+        MsgBox id ' ' i.name
+        if i.Check() {
+            MsgBox id
+            break
+        }
+    }
 }
 Esc:: ExitApp()
