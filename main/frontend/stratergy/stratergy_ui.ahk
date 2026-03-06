@@ -8,10 +8,10 @@ try {
 
     stratergy_actions_holder := UI.add_to_parent(stratergy_gui_holder)
 
-    UI.grid_layout(stratergy_gui_holder, [[stratergy_actions_holder]], , , 10, 10)
+    UI.gui_move(stratergy_actions_holder, 10, 60, 600, Stratergy.h - 120)
 
-    stratergy_actions_maximum_buttons := Integer(Floor(Sqrt(Stratergy.max_action_shown))) * 2
-    actions_array := [[], []]
+    stratergy_actions_maximum_buttons := (Stratergy.max_action_shown) // 2
+    actions_array := [[]]
     Loop Stratergy.max_action_shown {
         if actions_array[actions_array.Length].Length >= stratergy_actions_maximum_buttons {
             actions_array.Push([])
@@ -26,7 +26,6 @@ try {
         }
 
     }
-    actions_array.Push([])
 
     UI.grid_layout(stratergy_actions_holder, actions_array)
 
