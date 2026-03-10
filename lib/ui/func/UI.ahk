@@ -135,11 +135,11 @@ class UI {
         return false
     }
 
-    static gui_groupbox(g, name := '', color := this.title_color) {
+    static gui_groupbox(g, name := '', color := this.title_color, var_name?) {
         if g is Gui {
             c := IsSet(color) ? color : 'ffffff'
             g.GetClientPos(, , &w, &h)
-            gp := g.AddGroupBox('x0 y0 w' w ' h' h ' c' c, name)
+            gp := g.AddGroupBox('x0 y0 w' w ' h' h ' c' c (IsSet(var_name) ? ' v' var_name : ''), name)
             gp.SetFont('bold s' this.groupbox_size)
             return gp
         }
