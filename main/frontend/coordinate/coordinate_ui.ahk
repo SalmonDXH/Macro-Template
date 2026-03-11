@@ -1,6 +1,3 @@
-#Include coordinate_config.ahk
-
-
 try {
     coordinate_gui := UI.add_to_owner(home_ui)
     coordinate_gui.Title := 'Coordinate'
@@ -136,7 +133,7 @@ UpdateCoordinateSlot(new_slot_num) {
 
 DrawAllCoordinate(*) {
     RefreshCoordinateButton()
-    data := Coordinate.get(coordinate_map_ddl.Text, coordinate_gamemode_ddl.Text)
+    data := Coordinate.initialize(coordinate_map_ddl.Text, coordinate_gamemode_ddl.Text)
     Coordinate.MapDrawing.current_slot := coordinate_slot_title_text.Text
     Loop Team.number_of_slot {
         if data.Has('Slot ' A_Index) {

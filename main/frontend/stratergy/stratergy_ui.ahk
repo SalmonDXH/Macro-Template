@@ -1,5 +1,3 @@
-#Include stratergy_config.ahk
-
 try {
     stratergy_gui := UI.add_to_owner(home_ui)
     stratergy_gui.Title := 'Stratergy'

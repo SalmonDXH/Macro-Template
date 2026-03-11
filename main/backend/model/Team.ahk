@@ -9,10 +9,10 @@ class Team {
         config: Map()
     }
 
-    static get(team) {
+    static initialize(team) {
         file_name := (team is Integer) ? 'Team_' team : StrReplace(team, ' ', '_')
         this.data.team := (team is Integer) ? 'Team ' team : team
-        this.data.config := JsonFile(A_ScriptDir '\data\team\' file_name '.json').read()
+        this.data.config := JsonFile(A_ScriptDir '\data\game\team\' file_name '.json').read()
         return this.data.config
     }
 

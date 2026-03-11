@@ -15,6 +15,8 @@ class Template {
 
         static Get(id) => (this.Pool.Has(id)) ? this.Pool[id].Get() : Map()
     }
+
+
     class Unit {
         class Ability {
             class Entity {

@@ -4,7 +4,8 @@
 Class JsonFile extends FileCustom {
     read() {
         try {
-            return this.check() ? JSON.parse(FileRead(this.path)) : Map()
+            data := super.read()
+            return JSON.parse(data)
         }
         return Map()
     }
@@ -17,5 +18,6 @@ Class JsonFile extends FileCustom {
             s := data
         }
         super.write(s)
+        return true
     }
 }

@@ -8,11 +8,13 @@ class Coordinate {
         config: Map()
     }
 
-    static get(map_name, game_mode := 'default') {
-        file_name := StrReplace(game_mode '\' map_name, ' ', '_')
+    static initialize(map_name, game_mode := 'default') {
+        game_mode_path := StrReplace(Trim(game_mode), ' ', '_')
+        map_name_path := StrReplace(Trim(map_name), ' ', '_')
+        f_path := A_ScriptDir '\data\game\' game_mode_path '\' map_name_path '\coordinate.json'
         this.data.map_name := map_name
         this.data.game_mode := game_mode
-        f := JsonFile(A_ScriptDir '\data\coordinate\' file_name '.json')
+        f := JsonFile(f_path)
         this.data.config := (f.check()) ? f.read() : Template.Coordinate.Get(map_name)
         return this.data.config
     }
@@ -29,8 +31,10 @@ class Coordinate {
                 }
             }
         }
-        file_name := StrReplace(game_mode '\' map_name, ' ', '_')
-        JsonFile(A_ScriptDir '\data\coordinate\' file_name '.json').save(data)
+        game_mode_path := StrReplace(Trim(game_mode), ' ', '_')
+        map_name_path := StrReplace(Trim(map_name), ' ', '_')
+        f_path := A_ScriptDir '\data\game\' game_mode_path '\' map_name_path '\coordinate.json'
+        JsonFile(f_path).save(data)
     }
 
     class MapDrawing {

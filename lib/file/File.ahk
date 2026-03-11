@@ -25,7 +25,7 @@ class FileCustom {
     }
 
     read() {
-        return this.check() ? FileRead(this.path) : false
+        return this.check() ? FileRead(this.path) : ""
     }
 
     append(content := '') {

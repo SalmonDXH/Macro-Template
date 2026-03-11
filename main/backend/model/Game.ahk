@@ -58,4 +58,28 @@ class Game {
         }
 
     }
+    class Playing {
+        movement := 0
+        coordinate_data := Map()
+        stratergy_data := Map()
+        team_data := Map()
+
+
+        __New(game_mode, map_name, team_number) {
+            ; Coordinate
+            this.coordinate_data := Coordinate.initialize(map_name, game_mode)
+            ; Stratergy
+            this.stratergy_data := Stratergy.initialize(map_name, game_mode)
+            ; Team
+            this.team_data := Team.initialize(team_number)
+        }
+
+        play() {
+
+        }
+
+        reset(){
+            
+        }
+    }
 }

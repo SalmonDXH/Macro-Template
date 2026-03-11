@@ -1,6 +1,3 @@
-#Include team_config.ahk
-
-
 try {
     team_gui := UI.add_to_owner(home_ui)
     team_gui.Title := 'Team'
@@ -56,7 +53,7 @@ OpenTeamGUI(*) {
 }
 
 FillTeamGUI(*) {
-    data := Team.get(team_ddl.Text)
+    data := Team.initialize(team_ddl.Text)
 
     static ResetSlot(holder) {
         holder['name'].Value := ''

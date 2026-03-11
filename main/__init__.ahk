@@ -73,6 +73,7 @@ Logging.debug('Load supported library', 'Starting')
 
 #Include backend\__init__.ahk
 #Include frontend\__init__.ahk
+#Include game\__init__.ahk
 Logging.debug('Load macro library', 'Starting')
 
 ;!#############################################
