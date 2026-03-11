@@ -8,6 +8,7 @@ class Coordinate {
         config: Map()
     }
 
+
     static initialize(map_name, game_mode := 'default') {
         game_mode_path := StrReplace(Trim(game_mode), ' ', '_')
         map_name_path := StrReplace(Trim(map_name), ' ', '_')

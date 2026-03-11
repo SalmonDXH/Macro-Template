@@ -60,26 +60,45 @@ class Game {
     }
     class Playing {
         movement := 0
-        coordinate_data := Map()
-        stratergy_data := Map()
-        team_data := Map()
-
+        team_state := Map() 0
 
         __New(game_mode, map_name, team_number) {
             ; Coordinate
-            this.coordinate_data := Coordinate.initialize(map_name, game_mode)
+            Coordinate.initialize(map_name, game_mode)
             ; Stratergy
-            this.stratergy_data := Stratergy.initialize(map_name, game_mode)
+            Stratergy.initialize(map_name, game_mode)
             ; Team
-            this.team_data := Team.initialize(team_number)
+            Team.initialize(team_number)
+        }
+
+        _reset_team_state() {
+            ; config here
+            state := Map()
+            Loop (Team.number_of_slot) {
+                slot_name := 'slot ' A_Index
+                state[slot_name] := Map()
+                Loop (Team.number_of_placement) {
+                    state[slot_name] := Map(
+                        'current_level', 0,
+                        'is_placed', false
+                    )
+                }
+            }
+            this.team_state := state
         }
 
         play() {
+            ; Get the current action
+            stratergy_data := Stratergy.Get(this.movement)
+            if (stratergy_data) {
 
+            }
+            this.movement += 1
         }
 
-        reset(){
-            
+        reset() {
+            this.movement := 0
+            this._reset_team_state()
         }
     }
 }

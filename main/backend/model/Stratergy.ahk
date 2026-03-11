@@ -28,7 +28,7 @@ class Stratergy {
     static h := 600
 
     static Pool := Map()
-
+    static Get(movement) => (this.Pool.Has('Action ' movement)) ? this.Pool['Action ' movement] : false
 
     static Parse(data) {
         result := Map()
