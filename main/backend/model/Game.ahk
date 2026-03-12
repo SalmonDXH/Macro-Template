@@ -109,6 +109,7 @@ class Game {
                 }
             }
             this.movement += 1
+            return true
         }
 
         reset() {
