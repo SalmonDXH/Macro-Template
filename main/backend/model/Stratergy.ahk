@@ -11,7 +11,7 @@ class Stratergy {
             this.slot := (data.Has('slot')) ? data['slot'] : 'None'
             this.unit := (data.Has('unit')) ? data['unit'] : 'None'
             this.level := (data.Has('level')) ? data['level'] : 'None'
-            try this.delay := (data.Has('delay')) ? Integer(data['delay']) : 0
+            try this.delay := (data.Has('delay')) ? Number(data['delay']) : 0
         }
 
         ToMap() => Map(

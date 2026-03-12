@@ -87,11 +87,26 @@ class Game {
             this.team_state := state
         }
 
+        delay(delay) {
+            delay_start := A_TickCount
+            while (A_TickCount - delay_start > delay * 1000) {
+                ; Anti something here or random click
+            }
+        }
+
         play() {
             ; Get the current action
-            stratergy_data := Stratergy.Get(this.movement)
-            if (stratergy_data) {
-
+            current_strat := Stratergy.Get(this.movement)
+            if (current_strat and current_strat is Stratergy.Entity) {
+                if (current_strat.action != 'None') {
+                    if ("current_strat.action") { ; Action like place, ...
+                        this.delay(current_strat.delay)
+                        return true
+                    }
+                } else if (current_strat.delay) {
+                    this.delay(current_strat.delay)
+                    return true
+                }
             }
             this.movement += 1
         }
